@@ -1,0 +1,21 @@
+genome_dir: "genome"
+code_dir: "codes"
+genome: "chrM"
+annot_file: "chrM"
+sample_dir: "data"
+samples:
+    - "Metf_1"
+    - "Metf_2"
+    - "T2_1"
+    - "T2_2"
+    - "WT_1"
+    - "WT_2"
+    - "Tet_1"
+    - "Tet_2"
+    # - "T2_1R"
+    # - "T2_2R"
+
+offset: 14
+min_length: 15
+max_length: 45
+mapping_function: threeprime

@@ -1,0 +1,13 @@
+name: riboseq
+channels:
+    - bioconda
+    - conda-forge
+    - defaults
+dependencies:
+    - snakemake=4.7.0
+    - drmaa=0.7.7
+    - csvkit=0.9.1
+    - bedtools=2.27.1
+    - pysam>=0.14,<0.15
+    - plastid=0.4.8
+
