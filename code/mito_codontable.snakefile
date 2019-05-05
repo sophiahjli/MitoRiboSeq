@@ -55,7 +55,7 @@ rule codon_counts:
            counts_bai="{output_dir}/mapping/{sample}.bai"
     output: "{output_dir}/codon_count/{sample}_codon_count.txt"
     log: "{output_dir}/codon_count/{sample}_codon_count.log"
-    shell: 'python codes/BAM2codoncount.py \
+    shell: 'python code/BAM2codoncount.py \
             --bam "{input.counts}" \
             --gff "{input.gff}" \
             --fasta "{input.fasta}" \
