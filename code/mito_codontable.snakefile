@@ -13,7 +13,7 @@
 
 import glob
 
-configfile: "mito_config.yml"
+configfile:"code/mito_config.yml"
 SAMPLES = config["samples"] 
 output_dir = config["sample_dir"]
 

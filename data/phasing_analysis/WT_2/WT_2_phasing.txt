@@ -1,0 +1,64 @@
+## date = '2019-05-05 00:53:00.497992'
+## execstr = '/anaconda3/envs/riboseq/bin/phase_by_size data/phasing_analysis/WT_2/WT_2 --count_files data/mapping/WT_2.bam --annotation_files genome/chrM.gff3 --annotation_format GFF3 --threeprime --min_length 15 --max_length 45'
+## args = {  
+##          'add_three'            : False,,
+##          'annotation_files'     : ['genome/chrM.gff3'],,
+##          'annotation_format'    : 'GFF3',,
+##          'bed_extra_columns'    : 0,,
+##          'cmap'                 : None,,
+##          'codon_buffer'         : 5,,
+##          'count_files'          : ['data/mapping/WT_2.bam'],,
+##          'countfile_format'     : 'BAM',,
+##          'dpi'                  : 150,,
+##          'figformat'            : 'png',,
+##          'figsize'              : None,,
+##          'gff_cds_types'        : {'CDS_fragment', 'CDS', 'CDS_predicted', 'CDS_indpendently_known'},,
+##          'gff_exon_types'       : {'exon_of_single_exon_gene', 'noncoding_exon', 'three_prime_coding_exonfive_prime_noncoding_exon', 'three_prime_noncoding_exon', 'interior_exon', 'pseudogenic_exon', 'five_prime_coding_exon', 'exon', 'interior_coding_exon', 'coding_exon'},,
+##          'gff_transcript_types' : {'rRNA_cleavage_RNA', 'seryl_tRNA', 'class_II_RNA', 'aspartyl_tRNA', 'U14_snoRNA', 'rRNA_5_8S', 'snoRNA', 'shRNA', 'spot42_RNA', 'H_ACA_box_snoRNA', 'edited_mRNA', 'U1_snRNA', 'glutamyl_tRNA', 'miRNA', 'monocistronic_mRNA', 'antisense_RNA', 'RprA_RNA', 'phenylalanyl_tRNA', 'rRNA_25S', 'rRNA_21S', 'leucyl_tRNA', 'valyl_tRNA', 'pseudouridylation_guide_snoRNA', 'threonyl_tRNA', 'telomeric_transcript', 'trans_spliced_mRNA', 'mRNA_with_plus_1_frameshift', 'OxyS_RNA', 'methionyl_tRNA', 'rRNA_18S', 'pyrrollysyl_tRNA', 'rRNA_28S', 'RNA_6S', 'non_functional_homolog_of_pseudogenic_transcript', 'isoleucyl_tRNA', 'TERRA', 'anti_ARRET', 'C_D_box_snoRNA', 'polyadenylated_mRNA', 'snRNA', 'U11_snRNA', 'lysyl_tRNA', 'RRE_RNA', 'telomerase_RNA', 'tyrosyl_tRNA', 'cysteinyl_tRNA', 'mature_transcript', 'mRNA', 'dicistronic_mRNA', 'priRNA', 'ARIA', 'edited_transcript_by_A_to_I_substitution', 'rRNA', 'class_I_RNA', 'selenocysteinyl_tRNA', 'large_subunit_rRNA', 'MicF_RNA', 'siRNA', 'glycyl_tRNA', 'RNase_P_RNA', 'rRNA_16S', 'U4_snRNA', 'small_subunit_rRNA', 'RNase_MRP_RNA', 'U6_snRNA', 'U5_snRNA', 'IoR', 'U12_snRNA', 'methylation_guide_snoRNA', 'mRNA_recoded_by_translational_bypass', 'SRP_RNA', 'mRNA_with_frameshift', 'GcvB_RNA', 'tryptophanyl_tRNA', 'DsrA_RNA', 'polycistronic_mRNA', 'tRNA', 'lincRNA', 'guide_RNA', 'antisense_lncRNA', 'Y_RNA', 'glutaminyl_tRNA', 'asparaginyl_tRNA', 'U6atac_snRNA', 'U3_snoRNA', 'CsrB_RsmB_RNA', 'arginyl_tRNA', 'moR', 'enhancerRNA', 'alanyl_tRNA', 'piRNA', 'mRNA_with_minus_2_frameshift', 'lnc_RNA', 'tasiRNA', 'vault_RNA', 'U4atac_snRNA', 'prolyl_tRNA', 'mRNA_with_minus_1_frameshift', 'U2_snRNA', 'small_regulatory_ncRNA', 'recoded_mRNA', 'intronic_lncRNA', 'rRNA_23S', 'tmRNA', 'rasiRNA', 'enzymatic_RNA', 'histidyl_tRNA', 'rRNA_5S', 'scRNA', 'mRNA_with_plus_2_frameshift', 'pseudogenic_transcript', 'ARRET', 'ncRNA', 'transcript', 'edited_transcript', 'mRNA_recoded_by_codon_redefinition'},,
+##          'mapping'              : 'threeprime',,
+##          'max_length'           : 45,,
+##          'maxmem'               : 0,,
+##          'min_length'           : 15,,
+##          'nibble'               : 0,,
+##          'offset'               : 0,,
+##          'outbase'              : 'data/phasing_analysis/WT_2/WT_2',,
+##          'roi_file'             : None,,
+##          'sorted'               : False,,
+##          'stylesheet'           : None,,
+##          'sum'                  : None,,
+##          'tabix'                : False,,
+##          'title'                : None,,
+##          'warnlevel'            : 0,
+##        }
+read_length	reads_counted	fraction_reads_counted	phase0	phase1	phase2
+15	423	0.004591	0.385343	0.257683	0.356974
+16	1111	0.012059	0.338434	0.430243	0.231323
+17	1724	0.018712	0.238399	0.477958	0.283643
+18	1866	0.020253	0.330118	0.383708	0.286174
+19	2302	0.024986	0.361425	0.391399	0.247176
+20	2298	0.024942	0.264578	0.445170	0.290252
+21	2378	0.025811	0.317073	0.333894	0.349033
+22	2134	0.023162	0.379100	0.328022	0.292877
+23	1973	0.021415	0.279270	0.384693	0.336036
+24	2404	0.026093	0.385191	0.280782	0.334027
+25	3821	0.041473	0.352264	0.448574	0.199163
+26	6031	0.065460	0.214226	0.525783	0.259990
+27	7595	0.082435	0.274128	0.331271	0.394602
+28	9822	0.106607	0.293830	0.446040	0.260130
+29	10314	0.111947	0.257708	0.395967	0.346325
+30	10466	0.113597	0.305656	0.274890	0.419453
+31	7685	0.083412	0.357970	0.321666	0.320364
+32	5444	0.059088	0.363152	0.323843	0.313005
+33	3610	0.039182	0.365097	0.304986	0.329917
+34	2336	0.025355	0.394692	0.282534	0.322774
+35	1466	0.015912	0.405184	0.298090	0.296726
+36	1105	0.011994	0.390045	0.292308	0.317647
+37	828	0.008987	0.361111	0.320048	0.318841
+38	741	0.008043	0.353576	0.292848	0.353576
+39	639	0.006936	0.345853	0.334898	0.319249
+40	505	0.005481	0.396040	0.283168	0.320792
+41	435	0.004721	0.365517	0.349425	0.285057
+42	364	0.003951	0.362637	0.263736	0.373626
+43	188	0.002041	0.340426	0.335106	0.324468
+44	97	0.001053	0.288660	0.412371	0.298969
+45	28	0.000304	0.357143	0.392857	0.250000

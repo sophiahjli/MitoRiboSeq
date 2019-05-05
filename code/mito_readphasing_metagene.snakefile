@@ -1,6 +1,6 @@
 
 
-configfile:"mito_config.yml"
+configfile:"code/mito_config.yml"
 SAMPLES = config["samples"]
 output_dir = config["sample_dir"]
 GFF_FILE="{genome_dir}/{annot_file}.gff3".format(genome_dir=config["genome_dir"], annot_file=config["annot_file"])
@@ -37,7 +37,7 @@ rule metagene_stop_ND6:
 		'metagene count "genome/chrM_orfs_stop_rois_ND6.txt" \
 		"{wildcards.output_dir}/metagene/{wildcards.sample}/{wildcards.sample}" \
 		--count_files "{input.counts}" --{config[mapping_function]} \
-		--norm_region 30 200 --min_counts 10 --cmap Blues'
+		--norm_region 30 100 --min_counts 50 --cmap Blues'
 
 
 rule phasing_analysis:

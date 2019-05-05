@@ -1,0 +1,4 @@
+Building DAG of jobs...
+MissingInputException in line 17 of /Users/hsinjung/Dropbox/Sophia_Mitochondria/MitoRiboSeq/code/mito_readphasing_metagene.snakefile:
+Missing input files for rule index_bam:
+data/mapping/WT_1.bam
