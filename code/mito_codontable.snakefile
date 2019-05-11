@@ -29,8 +29,7 @@ rule all:
           expand("{output_dir}/wiggle/{sample}_{mapping_function}_{offset}_map_rc.wig",output_dir = output_dir, sample=SAMPLES, offset = config["offset"], mapping_function = config["mapping_function"]),
 
           expand("{output_dir}/codon_count/{sample}_codon_count.txt",output_dir = output_dir, sample=SAMPLES),
-
-
+          expand("{output_dir}/codon_count/All_codoncount_table.txt",output_dir = output_dir)
 
 rule wiggle_specify_mapping:
     input: counts="{output_dir}/mapping/{sample}.bam",
@@ -48,6 +47,7 @@ rule wiggle_specify_mapping:
             --offset {wildcards.offset} \
             --nibble {wildcards.offset}'
 
+# Generate all the codon counts to single nucleotide resolution based on the offset
 rule codon_counts:
     input: gff=GFF_FILE,
            fasta=FASTA_FILE,
@@ -66,4 +66,12 @@ rule codon_counts:
             --{config[mapping_function]} \
             -o "{output}" 2> "{log}"'
 
-
+# Takes all the individual codon count table to one
+######### Not yet done as I haven't modified the codes!######
+rule collapse_codon_counts:
+  input: counts_table = "{output_dir}/codon_count/{sample}_codon_count.txt"
+  output: "{output_dir}/codon_count/All_codoncount_table.txt"
+  log: "{output_dir}/codon_count/{sample}_codon_count.log"
+  shell: 'python code/CollapseCodonCounts_MultipleFiles.py \
+            --sample "{input.counts_table}" \
+            -o "{output}" 2> "{log}"'

@@ -1,0 +1,31 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1
+Rules claiming more threads will be scaled down.
+Job counts:
+	count	jobs
+	1	all
+	4	codon_counts
+	4	wiggle_specify_mapping
+	9
+
+rule codon_counts:
+    input: genome/chrM.gff3, genome/chrM.fa, data/mapping/T2_1.bam, data/mapping/T2_1.bai
+    output: data/codon_count/T2_1_codon_count.txt
+    log: data/codon_count/T2_1_codon_count.log
+    jobid: 5
+    wildcards: output_dir=data, sample=T2_1
+
+Error in rule codon_counts:
+    jobid: 5
+    output: data/codon_count/T2_1_codon_count.txt
+    log: data/codon_count/T2_1_codon_count.log
+
+RuleException:
+CalledProcessError in line 58 of /Users/hsinjung/Dropbox/Sophia_Mitochondria/MitoRiboSeq/code/mito_codontable.snakefile:
+Command ' set -euo pipefail;  python codes/BAM2codoncount.py             --bam "data/mapping/T2_1.bam"             --gff "genome/chrM.gff3"             --fasta "genome/chrM.fa"             --min_length=15             --max_length=45             --add_three             --offset 14             --threeprime             -o "data/codon_count/T2_1_codon_count.txt" 2> "data/codon_count/T2_1_codon_count.log" ' returned non-zero exit status 2.
+  File "/Users/hsinjung/Dropbox/Sophia_Mitochondria/MitoRiboSeq/code/mito_codontable.snakefile", line 58, in __rule_codon_counts
+  File "/anaconda3/envs/riboseq/lib/python3.6/concurrent/futures/thread.py", line 56, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /Users/hsinjung/Dropbox/Sophia_Mitochondria/MitoRiboSeq/.snakemake/log/2019-05-05T215051.756427.snakemake.log

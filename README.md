@@ -1,7 +1,18 @@
 # MitoRiboSeq
 Codes for processing mitochondrial ribosome profiling data
 
-## Install python in Anaconda/Minicondo
+The workflow for the data processing from sequenced data is:
+1. Alignment and extract mitochondria-specific data
+2. Metagene analysis to assign the mitoribosomal A-site position from the mapped reads
+3. Generate codon table at nucleotide resolution
+4. Codon occupancy analysis and gene-specific cumulative count visualization
+
+### 1. Alignment and extract mitochondria-specific data
+This is done using several tools and the workflow is available via GALAXY
+
+### 2. Metagene analysis to assign the mitoribosomal A-site position from the mapped reads
+
+## Install python in Anaconda/Miniconda
 (Lance please add something here)
 
 ## Install R and Rstudio
@@ -34,7 +45,7 @@ snakemake -f mito_readphasing_metagene.snakefile
 ```
 Note you can specify the samples and the range of RNA fragments to be analyzed in `mito_config.yml`.
 
-## Count table generation
+## 3. Generate codon table at nucleotide resolution
 
 Once the offset is determined, 
 
