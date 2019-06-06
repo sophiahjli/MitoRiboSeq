@@ -13,24 +13,30 @@ Starting with FASTQ files, the workflow ??? to produce ???.
 
 ### Inputs
 
-*   FASTQ files for each sample
 *   Reference sequence in FASTA format
+*   FASTQ files for each sample
 *   Gene model in GTF format
 *   Configuration file(s) in YAML format
 
 ### Outputs
 
+*   `mapping` - BAM alignment files 
 *   `codon_count` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non. 
-*   `mapping` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nunc. 
 *   `metagene` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras a. 
 *   `metagene_10_200_mincount10` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a.  
 *   `phasing_analysis` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt.
 *   `wiggle` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus. 
 
+#### Intermediate outputs
+
+*    `trimmed` - Fastq files that have been trimmed of adapter and low quality sequences
+
+
 ### Workflow
 
 1.  **FASTQ summary and QC metrics** - Use [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to determine some basic QC metrics from the raw FASTQ files
-2.  **Align reads** - Use [STAR](https://github.com/alexdobin/STAR) to aign reads to the genome, accounting for known splice junctions
+2.  **Trim reads** - Trim adapter sequences and low quality bases from fastq files using [cutadapt](https://cutadapt.readthedocs.io/en/stable/).
+3.  **Align reads** - Use [BWA](http://bio-bwa.sourceforge.net/bwa.shtml) to align reads to the genome
 3.  **Read Phasing Analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) scripts [`metagene`]() and [`phase_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size) to provide a profile of counts over stop codons and estimate [sub-codon phasing](https://plastid.readthedocs.io/en/latest/glossary.html#term-sub-codon-phasing), stratified by read length
 3.  **Codon Analysis** - Use [plastid](https://plastid.readthedocs.io/en/latest/) to generate ribosomal occupancy counts per codon
 6.  **Read Length Distribution** - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor. 
@@ -87,6 +93,13 @@ Starting with FASTQ files, the workflow ??? to produce ???.
     ```bash
     source activate riboseq
     ```
+
+6.  Execute the trimming and alignment workflow
+
+    ```bash
+    snakemake --configfile "code/mito_config.yml" --use-conda -f code/mapping.snakefile
+    ```
+
 
 6.  Execute the read phasing and metagene workflow
 

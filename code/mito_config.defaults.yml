@@ -1,5 +1,39 @@
-genome_dir: "genome"
-genome: "chrM"
+# Pattern to input fastq files, use {sample} to indicate portion of filename
+# that corresponds to the sample name (e.g. data/{sample}.fq.gz)
+fastq_file_pattern: "data/fastq/{sample}.fastq.gz"
+
+# Output directories
+# Directory to put working files (trimmed reads, bam files, etc.)
+working_dir: "results/working"
+# Directory to store final results (count matrix, summary reports)
+results_dir: "results"
+
+
+# Parameters used for each step of the workflow
+params:
+  fastqc:
+    extra: ""
+  star:
+    # optional star parameters
+    extra: ""
+    # Command to unzip gzip files to stdout (zcat, gzcat, etc.)
+    zcat_command: "zcat"
+  cutadapt:
+    # optional parameters
+    extra: ""
+  nudup:
+    umi_length: 8
+    umi_start: 8
+    tmp_dir: "/tmp"
+    # optional parameters
+    extra: ""
+  featurecounts:
+    feature_type: "exon"
+    attribute_type: "gene_id"
+    extra: "-Q 50"
+
+# Parameters used in the metagene and codon count workflows
+genome_fasta_file: "genome/chrM.fa"
 annot_file: "chrM"
 sample_dir: "data"
 samples:

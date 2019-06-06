@@ -1,1 +1,15 @@
 .DS_Store
+*.swp
+slurm-*.out
+
+.snakemake
+data
+results
+logs
+
+genome/*.amb
+genome/*.ann
+genome/*.bwt
+genome/*.pac
+genome/*.sa
+
