@@ -30,9 +30,17 @@ rule bwa_mem:
     params:
         index=genome_dir + "/" + genome,
         extra=r"-R '@RG\tID:{sample}\tSM:{sample}'",
-        sort="none",             # Can be 'none', 'samtools' or 'picard'.
+        sort="samtools",             # Can be 'none', 'samtools' or 'picard'.
         sort_order="coordinate",  # Can be 'queryname' or 'coordinate'.
         sort_extra=""            # Extra args for samtools/picard.
     threads: 8
     wrapper:
         "0.35.0/bio/bwa/mem"
+
+rule samtools_index:
+    input: "{file}.bam"
+    output: "{file}.bai"
+    params:
+        "" # optional params string
+    wrapper:
+        "0.35.0/bio/samtools/index"
