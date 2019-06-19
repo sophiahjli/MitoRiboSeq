@@ -18,6 +18,3 @@ genome = os.path.splitext(genome_fasta)[0]
 
 def get_fastq(wildcards):
     return samples[wildcards.sample]
-
-
-

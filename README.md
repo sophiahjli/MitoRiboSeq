@@ -23,12 +23,12 @@ Starting with FASTQ files, the workflow ??? to produce ???.
 ### Outputs
 
 *   `mapping` - BAM alignment files 
-*   `metagene` - [plastid metagene count] output for both the `metagene_roi_nd4_file` and the `metagene_roi_nd6_file` specified in the config
-*   `phasing_analysis` - [plastid phaze_by_size](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
+*   `metagene` - [plastid `metagene count`] output for both the `metagene_roi_nd4_file` and the `metagene_roi_nd6_file` specified in the config
+*   `phasing_analysis` - [plastid `phaze_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
     output to estimate sub-codon phasing, stratified by read length.
+*   `wiggle` - [plastid `make_wiggle`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.make_wiggle.html#module-plastid.bin.make_wiggle) output. Genome browser tracks from read alignments, using mapping rules to extract ribosomal P-sites from the alignments.
 *   `codon_count` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non. 
 *   `metagene_10_200_mincount10` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a.  
-*   `wiggle` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed luctus. 
 
 #### Intermediate outputs
 
@@ -40,14 +40,15 @@ Starting with FASTQ files, the workflow ??? to produce ???.
 1.  **FASTQ summary and QC metrics** - Use [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to determine some basic QC metrics from the raw FASTQ files
 2.  **Trim reads** - Trim adapter sequences and low quality bases from fastq files using [cutadapt](https://cutadapt.readthedocs.io/en/stable/).
 3.  **Align reads** - Use [BWA](http://bio-bwa.sourceforge.net/bwa.shtml) to align reads to the genome
-3.  **Read Phasing Analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) scripts 
-    [`metagene`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) and 
+4.  **Metagene analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) scripts 
+    [`metagene`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) to provide a profile of counts over stop codons
+5.  **Read Phasing Analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) script
     [`phase_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size) 
-    to provide a profile of counts over stop codons and estimate 
-    [sub-codon phasing](https://plastid.readthedocs.io/en/latest/glossary.html#term-sub-codon-phasing), stratified by read length
-3.  **Codon Analysis** - Use [plastid](https://plastid.readthedocs.io/en/latest/) to generate ribosomal occupancy counts per codon
-6.  **Read Length Distribution** - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor. 
-6.  **Codon Occupancy** - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend. 
+    to estimate [sub-codon phasing](https://plastid.readthedocs.io/en/latest/glossary.html#term-sub-codon-phasing), stratified by read length
+6.  **Visualize** - visalize the ribosomal P-site coverage by generating genome browser tracks (wiggle format)
+7.  **Codon Analysis** - Use [plastid](https://plastid.readthedocs.io/en/latest/) to generate ribosomal occupancy counts per codon
+8.  **Read Length Distribution** - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor. 
+9.  **Codon Occupancy** - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend. 
 
 
 ## Install prerequisites
