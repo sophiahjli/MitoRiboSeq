@@ -1,15 +1,15 @@
 # MitoRiboSeq
-Workflow used to generate ???? from mitochondrial ribosome profiling data generated using the protocols described in [REF?]().
+This workflow is used to generate codon- and gene-based analysis from mitochondrial ribosome profiling data generated using the protocols described in Monitoring mitochondrial translation with ribosome profiling in Nature Protocol by Li et al. 2019 [ref link].
 
-The workflow is written using [Snakemake](https://snakemake.readthedocs.io/).
 Dependencies are installed using [Bioconda](https://bioconda.github.io/).
+The workflow is written using [Snakemake](https://snakemake.readthedocs.io/).
 
 
 ## Overview
 
-This workflow was designed to ???.
+This workflow is designed to take FASTQ files from the Illumina sequencer to map each mitoribosome footprint to its occupied A-site. This mapping will allow detailed monitor of mitoribosome translation dynamics. 
 
-Starting with FASTQ files, the workflow ??? to produce ???.
+Starting with FASTQ files, the workflow ??? to produce ???. Followed by the mapping to nucleotide level, codes for codon occupancy analysis and cumulative mitoribosome footprint along the transcript will be provided to visaulize mitoribosome distribution on mitochondria-encoded genes.
 
 ### Inputs
 
