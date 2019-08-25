@@ -1,0 +1,51 @@
+# Pattern to input fastq files, use {sample} to indicate portion of filename
+# that corresponds to the sample name (e.g. data/{sample}.fq.gz)
+fastq_file_pattern: "data/fastq/{sample}.fastq.gz"
+
+# Genome reference files
+genome_fasta_file: "genome/chrM.fa"
+genome_annotation_gff3_file: "genome/chrM.gff3"
+metagene_roi_nd4_file: "genome/chrM_orfs_start_rois_ND4.txt"
+metagene_roi_nd6_file: "genome/chrM_orfs_stop_rois_ND6.txt"
+
+# Output directories
+# Directory to put working files (trimmed reads, bam files, etc.)
+working_dir: "results/working"
+# Directory to store final results (count matrix, summary reports)
+results_dir: "results"
+
+
+# Parameters used for each step of the workflow
+params:
+  fastqc:
+    extra: ""
+  star:
+    # optional star parameters
+    extra: ""
+    # Command to unzip gzip files to stdout (zcat, gzcat, etc.)
+    zcat_command: "zcat"
+  cutadapt:
+    # optional parameters
+    extra: ""
+  nudup:
+    umi_length: 8
+    umi_start: 8
+    tmp_dir: "/tmp"
+    # optional parameters
+    extra: ""
+  featurecounts:
+    feature_type: "exon"
+    attribute_type: "gene_id"
+    extra: "-Q 50"
+
+# Parameters used in the metagene and codon count workflows
+sample_dir: "data"
+samples:
+    - "T2_1"
+    - "T2_2"
+    - "WT_1"
+    - "WT_2"
+offset: 14
+min_length: 15
+max_length: 45
+mapping_function: threeprime

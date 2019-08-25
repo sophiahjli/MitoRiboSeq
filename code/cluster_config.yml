@@ -1,0 +1,12 @@
+__default__:
+    "n": 1
+    "memory": 2000
+    "qos": "1hr"
+cutadapt:
+    "n": 5
+star_align:
+    "n": 10
+    "memory": 50000
+star_genome_index:
+    "n": 10
+    "memory": 50000

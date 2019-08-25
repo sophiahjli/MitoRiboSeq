@@ -1,0 +1,15 @@
+name: MitoRiboSeq
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - snakemake=5.4.5
+    - drmaa=0.7.9
+#    - cutadapt=2.3 # This version is much newer than the one used (1.6). 1.6 is not easily intallable via bioconda.
+#    - csvkit=0.9.1
+#    - bedtools=2.27.1
+#    - pysam>=0.14,<0.15
+#    - plastid=0.4.8
+#    - r=3.5.1
+#    - rstudio
