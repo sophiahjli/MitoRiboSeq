@@ -9,7 +9,7 @@ The workflow is written using [Snakemake](https://snakemake.readthedocs.io/).
 
 This workflow is designed to take FASTQ files from the Illumina sequencer to map each mitoribosome footprint to its occupied A-site. This mapping will allow detailed monitor of mitoribosome translation dynamics. 
 
-Starting with FASTQ files, the workflow ??? to produce ???. Followed by the mapping to nucleotide level, codes for codon occupancy analysis and cumulative mitoribosome footprint along the transcript will be provided to visaulize mitoribosome distribution on mitochondria-encoded genes.
+Starting with FASTQ files, the workflow is divided grossly into three parts: QC and metagene analysis, A-site assignment and codon count table generation, and downstream codon occupancy and cumulative ribosome occupancy analysis. In the first part, the workflow will run a QC, align all the reads to the genome, and do metagene gene analysis to produce a file where the user can determine the best offset to assign the ribosomal A-site. Once the offset is determined, all the reads will be assigned to the A-site at nucleotide level and a codon count table where the counts for each codon in each gene are arranged in a table to facilitate downstream analysis. Two common analysis we routinely used such as codon occupancy analysis and cumulative mitoribosome footprint along the transcript will be provided to visaulize mitoribosome distribution on mitochondria-encoded genes.
 
 ### Inputs
 
