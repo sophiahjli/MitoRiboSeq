@@ -11,6 +11,6 @@ rule phasing_analysis:
      --count_files {input.counts}  \
      --annotation_files {input.gff} \
      --annotation_format GFF3 \
-     --{config[mapping_function]}  \
-     --min_length {config[min_length]} \
-     --max_length {config[max_length]} '
+     --{config[params][plastid][mapping_function]}  \
+     --min_length {config[params][plastid][min_length]} \
+     --max_length {config[params][plastid][max_length]} '
