@@ -81,10 +81,13 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     git clone <repo> <dir>
     cd <dir>
     ```
+** show it more clear how to clone this MitoRiboSeq to a local
 
 2.  Input data
 
-    BAM files are recommended to be stored in `data/mapping`. After each steps, corresponding data will be stored in subfolders under `data` for clean organization.
+    The FASTQ data from the sequencer can be stored in `data/fastq` in fastq.gz format. After each steps, corresponding data will be stored in subfolders under `data` for clean organization. If several samples were pooled in sequencing, barcode splitting is required as each file is considered an independent sample.
+
+**Maybe add a barcode splitting guide here
 
 3.  Edit configuration files as needed
 
@@ -96,6 +99,7 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     cp cluster_config.yml mycluster_config.yml
     nano mycluster_config.yml
     ```
+** What happens if the user doesn't need to change?
 
 4.  Install dependencies into an isolated environment
 
@@ -114,6 +118,7 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     ```bash
     snakemake --configfile "code/mito_config.yml" --use-conda -s code/mito_readphasing_metagene.snakefile
     ```
+** if without the --configfile specification, is the defult one used?
 
 7.  Execute the codon occupancy workflow
 
