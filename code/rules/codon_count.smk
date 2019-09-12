@@ -12,11 +12,11 @@ rule codon_counts:
             --bam "{input.counts}" \
             --gff "{input.gff}" \
             --fasta "{input.fasta}" \
-            --min_length={config[min_length]} \
-            --max_length={config[max_length]} \
+            --min_length={config[params][plastid][min_length]} \
+            --max_length={config[params][plastid][max_length]} \
             --add_three \
-            --offset {config[offset]} \
-            --{config[mapping_function]} \
+            --offset {config[params][plastid][offset]} \
+            --{config[params][plastid][mapping_function]} \
             -o "{output}" 2> "{log}"'
 
 rule collapse_codon_counts:
@@ -25,11 +25,11 @@ rule collapse_codon_counts:
   log: log_dir + "/codon_count/combine_codon_count.log"
   shell:
     """
-    head -1 {input[0]:q} >> {output} && 
     awk '
         function basename(file, a, n) {{
             n = split(file, a, "/")
             return a[n]
         }}
-    {{if (NR > 1) {{ fn=basename(FILENAME); sub("_codon_count.txt", "", fn); print $0, fn }} }}' {input:q} >> {output:q} 2> {log:q}
+    BEGIN {{ OFS="\\t" }}
+    {{if (NR > 1) {{ fn=basename(FILENAME); sub("_codon_count.txt", "", fn); print $0, fn }} else {{ print $0, "sample" }} }}' {input:q} >> {output:q} 2> {log:q}
     """

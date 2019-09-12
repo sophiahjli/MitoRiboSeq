@@ -18,7 +18,10 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 *   ROI files `metagene_roi_nd4_file` and `metagene_roi_nd6_file` created using the 
     [plastid `metagene generate`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) command
 *   Gene model in GTF format
-*   Configuration file(s) in YAML format
+*   Additional genome information files
+    * `Mito_geneInfo.txt` - ??? format file containing ???
+    * `AA_Codon_HumMito.csv` - ??? format file containing ???
+ *   Configuration file(s) in YAML format
 
 ### Outputs
 
@@ -27,8 +30,12 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 *   `phasing_analysis` - [plastid `phaze_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
     output to estimate sub-codon phasing, stratified by read length.
 *   `wiggle` - [plastid `make_wiggle`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.make_wiggle.html#module-plastid.bin.make_wiggle) output. Genome browser tracks from read alignments, using mapping rules to extract ribosomal P-sites from the alignments.
-*   `codon_count` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non. 
-*   `metagene_10_200_mincount10` - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a.  
+*   `codon_count` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non.*
+*   `metagene_10_200_mincount10` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a.*
+*   `QC` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit.*
+*   `figures` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tristique.*
+*   `tables` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus.*
+
 
 #### Intermediate outputs
 
@@ -47,8 +54,8 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     to estimate [sub-codon phasing](https://plastid.readthedocs.io/en/latest/glossary.html#term-sub-codon-phasing), stratified by read length
 6.  **Visualize** - visalize the ribosomal P-site coverage by generating genome browser tracks (wiggle format)
 7.  **Codon Analysis** - Use [plastid](https://plastid.readthedocs.io/en/latest/) to generate ribosomal occupancy counts per codon
-8.  **Read Length Distribution** - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor. 
-9.  **Codon Occupancy** - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend. 
+8.  **Read Length Distribution** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor.*
+9.  **Codon Occupancy** - Written in R, *lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend.*
 
 
 ## Install prerequisites
@@ -105,24 +112,14 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 6.  Execute the trimming, mapping, read phasing, and metagene workflow
 
     ```bash
-    snakemake --configfile "code/mito_config.yml" --use-conda -f code/mito_readphasing_metagene.snakefile
+    snakemake --configfile "code/mito_config.yml" --use-conda -s code/mito_readphasing_metagene.snakefile
     ```
 
 7.  Execute the codon occupancy workflow
 
     ```bash
-    snakemake --configfile "code/mito_config.yml" --use-conda -f code/mito_codontable.snakefile
+    snakemake --configfile "code/mito_config.yml" --use-conda -s code/mito_codontable.snakefile
     ```
-
-8.  Run subsequent analysis using R
-
-    Some subsequent analysis after codon count table generation is done in the R environment 
-    including read depth and coverage analysis, and plots for codon occupancy and gene-specific 
-    cumulative occupancy along the transcript.
-
-    * `20180919_readlength_distribution.Rmd` - ??? 
-    * `20180919_Mitoriboseq_codonoccupancy.Rmd` - ???
-
 
 ## Common snakemake options
 

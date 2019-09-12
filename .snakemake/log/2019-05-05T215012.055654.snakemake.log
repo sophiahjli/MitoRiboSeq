@@ -1,3 +1,0 @@
-WorkflowError in line 16 of /Users/hsinjung/Dropbox/Sophia_Mitochondria/MitoRiboSeq/code/mito_codontable.snakefile:
-Config file mito_config.yml not found.
-  File "/Users/hsinjung/Dropbox/Sophia_Mitochondria/MitoRiboSeq/code/mito_codontable.snakefile", line 16, in <module>
