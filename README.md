@@ -100,7 +100,7 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 4.  Install dependencies into an isolated environment
 
     ```bash
-    conda env create --file code/riboseq_environment.yml
+    conda env create --file code/mitoriboseq_environment.yml
     ```
 
 5.  Activate the environment
