@@ -106,7 +106,7 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 5.  Activate the environment
 
     ```bash
-    source activate riboseq
+    source activate MitoRiboSeq
     ```
 
 6.  Execute the trimming, mapping, read phasing, and metagene workflow
