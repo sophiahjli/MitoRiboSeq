@@ -1,6 +1,7 @@
 rule phasing_analysis:
     input: 
-        counts = config["results_dir"] + "/mapped/{sample}.bam",
+        counts=config["results_dir"] + "/mapped/{sample}.bam",
+        counts_index=config["results_dir"] + "/mapped/{sample}.bai",
         gff=config["genome_annotation_gff3_file"]
     output: 
         profile = config["results_dir"] + "/phasing_analysis/{sample}/{sample}_phasing.txt",
