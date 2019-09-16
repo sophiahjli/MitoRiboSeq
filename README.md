@@ -72,6 +72,7 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     conda config --add channels bioconda
     conda config --add channels conda-forge
     ```
+** Do we need to specify the system requirement as MacOS was having some weird trouble and I bet a lot of people will use Mac...
 
 ## Setup environment and run workflow
 
