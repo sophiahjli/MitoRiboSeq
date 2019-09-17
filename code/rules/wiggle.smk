@@ -8,8 +8,8 @@ rule wiggle_specify_mapping:
     params: base=config["results_dir"] + "/wiggle/{sample}_{mapping_function}_{offset}_map"
     shell: 'make_wiggle -o "{params.base}" \
             --count_files "{input.counts}" \
-            --min_length {config[min_length]} \
-            --max_length {config[max_length]} \
+            --min_length {config[params][plastid][min_length]} \
+            --max_length {config[params][plastid][max_length]} \
             --{wildcards.mapping_function} \
             --offset {wildcards.offset} \
             --nibble {wildcards.offset}'
