@@ -3,9 +3,13 @@
 fastq_file_pattern: "data/fastq/{sample}.fastq.gz"
 
 # Genome reference files
+# The genome reference sequence in fasta format
 genome_fasta_file: "genome/chrM.fa"
+# The gene annotations in GFF v3 format
 genome_annotation_gff3_file: "genome/chrM.gff3"
 
+# Other genome information files
+# **TODO** Add file format infomation
 mito_info: "genome/Mito_GeneInfo.txt"
 mito_aminoacid_codon: "genome/AA_Codon_HumMito.csv"
 metagene_roi_nd4_file: "genome/chrM_orfs_start_rois_ND4.txt"
@@ -41,14 +45,6 @@ params:
     feature_type: "exon"
     attribute_type: "gene_id"
     extra: "-Q 50"
-
-# Parameters used in the metagene and codon count workflows
-# sample_dir: "data"
-# samples:
-#     - "T2_1"
-#     - "T2_2"
-#     - "WT_1"
-#     - "WT_2"
   plastid:
     # `offset` is obtained after running "mito_readphasing_metagene.snakefile"
     offset: 14
