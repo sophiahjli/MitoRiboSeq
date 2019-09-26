@@ -19,8 +19,8 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     [plastid `metagene generate`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) command
 *   Gene model in GTF format
 *   Additional genome information files
-    * `Mito_geneInfo.txt` - ??? format file containing ???
-    * `AA_Codon_HumMito.csv` - ??? format file containing ???
+    * `Mito_geneInfo.txt` - **TODO** ??? format file containing ???
+    * `AA_Codon_HumMito.csv` - **TODO** ??? format file containing ???
  *   Configuration file(s) in YAML format
 
 ### Outputs
@@ -30,17 +30,15 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 *   `phasing_analysis` - [plastid `phaze_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
     output to estimate sub-codon phasing, stratified by read length.
 *   `wiggle` - [plastid `make_wiggle`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.make_wiggle.html#module-plastid.bin.make_wiggle) output. Genome browser tracks from read alignments, using mapping rules to extract ribosomal P-sites from the alignments.
-*   `codon_count` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non.*
-*   `metagene_10_200_mincount10` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a.*
-*   `QC` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit.*
-*   `figures` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tristique.*
-*   `tables` - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus.*
-
+*   `codon_count` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non.*
+*   `metagene_10_200_mincount10` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a.*
+*   `QC` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit.*
+*   `figures` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tristique.*
+*   `tables` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus.*
 
 #### Intermediate outputs
 
 *    `trimmed` - Fastq files that have been trimmed of adapter and low quality sequences
-
 
 ### Workflow
 
@@ -66,29 +64,35 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     *   Otherwise, install the [Miniconda](https://conda.io/en/latest/miniconda.html) package.
 
 2.  Enable the [Bioconda](https://bioconda.github.io/#using-bioconda) channel
+    (requires  64-bit Linux or Mac OS, Windows is not supported)
 
     ```
     conda config --add channels defaults
     conda config --add channels bioconda
     conda config --add channels conda-forge
     ```
-** Do we need to specify the system requirement as MacOS was having some weird trouble and I bet a lot of people will use Mac...
 
 ## Setup environment and run workflow
 
 1.  Clone workflow into working directory
 
     ```bash
-    git clone <repo> <dir>
-    cd <dir>
+    git clone https://github.com/sophiahjli/MitoRiboSeq.git
+    cd MitoRiboSeq
     ```
-** show it more clear how to clone this MitoRiboSeq to a local
 
 2.  Input data
 
-    The FASTQ data from the sequencer can be stored in `data/fastq` in fastq.gz format. After each steps, corresponding data will be stored in subfolders under `data` for clean organization. If several samples were pooled in sequencing, barcode splitting is required as each file is considered an independent sample.
-
-**Maybe add a barcode splitting guide here
+    1.  *FASTQ* files - the FASTQ data from the sequencer should
+        be stored in `data/fastq` in `fastq.gz` format, one file
+        per sample.
+    2.  *Genome* files
+        1. The genome reference sequence in fasta format
+        2. The gene annotations in GFF v3 format
+        3. Mitochondrial gene info file  # **TODO** Describe format
+        4. Mitochondrial amino acid codon table  # **TODO** Describe format
+        5. Mitochondrial orfs start rois ND4  # **TODO** Describe format
+        6. Mitochondrial orfs stop rois ND6  # **TODO** Describe format
 
 3.  Edit configuration files as needed
 
@@ -100,7 +104,6 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     cp cluster_config.yml mycluster_config.yml
     nano mycluster_config.yml
     ```
-** What happens if the user doesn't need to change?
 
 4.  Install dependencies into an isolated environment
 
@@ -119,7 +122,8 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     ```bash
     snakemake --configfile "code/mito_config.yml" --use-conda -s code/mito_readphasing_metagene.snakefile
     ```
-** if without the --configfile specification, is the defult one used?
+    
+    If `--configfile` is not specified, the defaults are used.
 
 7.  Execute the codon occupancy workflow
 
