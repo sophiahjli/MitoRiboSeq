@@ -75,8 +75,8 @@ calc_codon_occupancy <- function(data){
   occupancy_bygene <- data %>% group_by(gene_name) %>% mutate(gene_length = n()) %>% 
     group_by(gene_name,codon_seq,gene_length) %>% summarise(codon_num = n(),RPM_normgene = sum(RPM_normgene)) %>% 
     mutate(codon_freq = codon_num/gene_length,occupancy = RPM_normgene/codon_freq)
-  # Then use the median of occupancy from all genes to calculate the final occupancy
-  occupancy_bygene_summary <- occupancy_bygene %>% group_by(codon_seq) %>% summarise(occupancy_bygene = median(occupancy))
+  # Then use the mean of occupancy from all genes to calculate the final occupancy
+  occupancy_bygene_summary <- occupancy_bygene %>% group_by(codon_seq) %>% summarise(occupancy_bygene = mean(occupancy))
   
   # This one directly takes all the codons from all genes and calculate the occupancy
   occupancy_bygenome <- data %>% ungroup() %>% mutate(genome_size = n()) %>% 
