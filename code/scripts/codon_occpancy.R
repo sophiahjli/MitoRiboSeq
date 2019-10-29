@@ -91,8 +91,9 @@ plot_occupancy <- function(sample,occupancy){
   Met <- c("ATG","ATA")
   Stop <- c("TAA","TAG","AGA","AGG")
   # Label four different styles of plotting depending on what type of codon it is
-  occupancy <- occupancy %>% mutate(sig = max(0,case_when(occupancy_bygenome >= mean(.$occupancy_bygenome) + sd(.$occupancy_bygenome)~ 1),na.rm=T)) %>% 
-    mutate(is_Met = codon_seq %in% Met, is_stop = codon_seq %in% Stop,plot_col = max(1,case_when(is_Met == T ~ "2",is_stop ==T ~ "3",sig ==1 ~ "4"),na.rm=T))
+  occupancy <- occupancy %>% mutate(sig = case_when(occupancy_bygenome >= mean(.$occupancy_bygenome) + 1.5*sd(.$occupancy_bygenome)~ 1,TRUE ~ 0)) %>%
+    mutate(is_Met = codon_seq %in% Met, is_stop = codon_seq %in% Stop,
+           plot_col = case_when(is_Met == T ~ "2",is_stop ==T ~ "3",sig ==1 ~ "4",T~"1"))
   
   plot_style <- list(geom_point(),
                      geom_hline(yintercept = 1,linetype = 2),
