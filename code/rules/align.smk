@@ -13,9 +13,9 @@ rule bwa_index:
         prefix="{genome}",
         algorithm="bwtsw"
     wrapper:
-        "0.35.0/bio/bwa/index"
+        "0.51.3/bio/bwa/index"
 
-rule bwa_mem:
+rule bwa_samse:
     input:
         reads=[config["working_dir"] + "/trimmed/{sample}.fastq.gz"],
         genome_amb=genome_dir + "/" + genome + ".amb",
@@ -26,7 +26,7 @@ rule bwa_mem:
     output:
         config["results_dir"] + "/mapped/{sample}.bam"
     log:
-        log_dir + "bwa_mem/{sample}.log"
+        log_dir + "bwa_samse/{sample}.log"
     params:
         index=genome_dir + "/" + genome,
         extra=r"-R '@RG\tID:{sample}\tSM:{sample}'",
@@ -35,7 +35,7 @@ rule bwa_mem:
         sort_extra=""            # Extra args for samtools/picard.
     threads: 8
     wrapper:
-        "0.35.0/bio/bwa/mem"
+        "0.51.3/bio/bwa/samese"
 
 rule samtools_index:
     input: "{file}.bam"
@@ -43,4 +43,4 @@ rule samtools_index:
     params:
         "" # optional params string
     wrapper:
-        "0.35.0/bio/samtools/index"
+        "0.51.3/bio/samtools/index"
