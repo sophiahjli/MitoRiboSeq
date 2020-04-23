@@ -15,9 +15,24 @@ rule bwa_index:
     wrapper:
         "0.51.3/bio/bwa/index"
 
+rule bwa_aln:
+    input:
+        [config["working_dir"] + "/trimmed/{sample}.fastq.gz"]
+    output:
+        [config["working_dir"] + "/trimmed/{sample}.sai"]
+    params:
+        index=genome_dir + "/" + genome,
+        extra=""
+    log:
+        log_dir + "bwa_aln/{sample}.log"
+    threads: 8
+    wrapper:
+        "0.51.3/bio/bwa/aln"
+
 rule bwa_samse:
     input:
-        reads=[config["working_dir"] + "/trimmed/{sample}.fastq.gz"],
+        fastq=[config["working_dir"] + "/trimmed/{sample}.fastq.gz"],
+        sai=[config["working_dir"] + "/trimmed/{sample}.sai"],
         genome_amb=genome_dir + "/" + genome + ".amb",
         genome_ann=genome_dir + "/" + genome + ".ann",
         genome_bwt=genome_dir + "/" + genome + ".bwt",
@@ -29,13 +44,13 @@ rule bwa_samse:
         log_dir + "bwa_samse/{sample}.log"
     params:
         index=genome_dir + "/" + genome,
-        extra=r"-R '@RG\tID:{sample}\tSM:{sample}'",
+        extra=r"-r '@RG\tID:{sample}\tSM:{sample}'",
         sort="samtools",             # Can be 'none', 'samtools' or 'picard'.
         sort_order="coordinate",  # Can be 'queryname' or 'coordinate'.
         sort_extra=""            # Extra args for samtools/picard.
     threads: 8
     wrapper:
-        "0.51.3/bio/bwa/samese"
+        "0.51.3/bio/bwa/samse"
 
 rule samtools_index:
     input: "{file}.bam"

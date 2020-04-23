@@ -3,7 +3,7 @@ include: "common_setup.snakefile"
 rule all:
     input:
         expand(config["working_dir"] + "/fastqc/{sample}_fastqc.zip", sample=samples.keys()),
-
+        
         expand(config["results_dir"] + "/metagene/{sample}/{sample}_ND6stop_metagene_overview.png", sample=samples.keys()),
         expand(config["results_dir"] + "/metagene/{sample}/{sample}_ND6stop_metagene_profile.txt", sample=samples.keys()),
         
