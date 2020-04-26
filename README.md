@@ -111,6 +111,11 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
     conda env create --file code/mitoriboseq_environment.yml
     ```
 
+    Note: If you are updating the workflow, you may need to update the conda environment
+    ```bash
+    conda env update --file code/mitoriboseq_environment.yml
+    ```
+
 5.  Activate the environment
 
     ```bash
