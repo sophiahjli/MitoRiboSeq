@@ -8,13 +8,14 @@ rule cutadapt:
     log:
         log_dir + "/cutadapt/{sample}.log"
     threads:
-        32
+        6
     conda:
         "../envs/cutadapt.yml"
     shell:
       "cutadapt "
       "--adapter='CTGTAGGCACCATCAATATCTCGTATGCCGTCTTCTGCTTG' "
       "--output={output:q} "
+      "--cores={threads} "
       "{params.extra} "
       "{input:q} "
       ">{log} 2>&1"

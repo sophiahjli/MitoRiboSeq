@@ -5,9 +5,14 @@ fastq_file_pattern: "data/fastq/{sample}.fastq.gz"
 # Genome reference files
 
 # The genome reference sequence in fasta format
-genome_fasta_file: "genome/chrM.fa"
+genome_fasta_ftp: "ftp://ftp.ensembl.org/pub/release-100/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz"
+genome_fasta_file: "genome/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz"
 # The gene annotations in GFF v3 format
-genome_annotation_gff3_file: "genome/chrM.gff3"
+genome_annotation_gff3_ftp: "ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz"
+genome_annotation_gff3_file: "genome/Homo_sapiens.GRCh38.100.gff3.gz"
+# Mitochondrial Chromosome ID
+mito_chrom_id: "MT"
+
 
 # Other genome information files
 # **TODO** Add file format infomation

@@ -12,4 +12,4 @@ genome/*.ann
 genome/*.bwt
 genome/*.pac
 genome/*.sa
-
+genome/*.fa.gz
