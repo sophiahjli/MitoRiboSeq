@@ -17,7 +17,12 @@ rule bwa_index:
 
 rule bwa_aln:
     input:
-        [config["working_dir"] + "/trimmed/{sample}.fastq.gz"]
+        [config["working_dir"] + "/trimmed/{sample}.fastq.gz"],
+        genome_amb=genome_dir + "/" + genome + ".amb",
+        genome_ann=genome_dir + "/" + genome + ".ann",
+        genome_bwt=genome_dir + "/" + genome + ".bwt",
+        genome_pac=genome_dir + "/" + genome + ".pac",
+        genome_sa=genome_dir + "/" + genome + ".sa"
     output:
         [config["working_dir"] + "/trimmed/{sample}.sai"]
     params:
