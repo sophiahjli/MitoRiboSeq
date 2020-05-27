@@ -3,6 +3,4 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - numpy<=1.11.3
-      # - plastid=0.4.8=py36h84994c4_4
-    - plastid=0.4.8
+    - plastid>=0.5.1
