@@ -3,6 +3,7 @@
 fastq_file_pattern: "data/fastq/{sample}.fastq.gz"
 
 # Genome reference files
+
 # The genome reference sequence in fasta format
 genome_fasta_file: "genome/chrM.fa"
 # The gene annotations in GFF v3 format

@@ -5,9 +5,18 @@ __default__:
     "time": "1:00:00"
 cutadapt:
     "n": 5
-star_align:
+bwa_index:
+    "n": 1
+    "qos": "1day"
+    "time": "6:00:00"
+    "memory": 10000
+bwa_aln:
     "n": 10
+    "qos": "1day"
+    "time": "6:00:00"
     "memory": 50000
-star_genome_index:
+bwa_samse:
     "n": 10
+    "qos": "1day"
+    "time": "6:00:00"
     "memory": 50000
