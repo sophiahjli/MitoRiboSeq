@@ -22,6 +22,15 @@ genome_fasta = os.path.basename(config["genome_fasta_file"])
 genome_ext = splitext_gz(genome_fasta)[1]
 genome = splitext_gz(genome_fasta)[0]
 
+gff_dir = os.path.dirname(config["genome_annotation_gff3_file"])
+gff_file = os.path.basename(config["genome_annotation_gff3_file"])
+gff_ext = splitext_gz(gff_file)[1]
+gff = splitext_gz(gff_file)[0]
+
+mito_gff_file = os.path.join(gff_dir, "{}.mito.gff".format(gff))
+mito_gff_utr_file = os.path.join(gff_dir, "{}.mito.added_utrs.gff".format(gff))
+nd4_base = os.path.join(gff_dir, "{}.nd4".format(gff))
+nd6_base = os.path.join(gff_dir, "{}.nd6".format(gff))
 
 def get_fastq(wildcards):
     return samples[wildcards.sample]
