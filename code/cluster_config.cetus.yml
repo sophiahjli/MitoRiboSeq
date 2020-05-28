@@ -20,3 +20,6 @@ bwa_samse:
     "qos": "1day"
     "time": "6:00:00"
     "memory": 50000
+wiggle_specify_mapping:
+    "qos": "1day"
+    "time": "6:00:00"

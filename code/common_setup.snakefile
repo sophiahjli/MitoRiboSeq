@@ -22,6 +22,11 @@ genome_fasta = os.path.basename(config["genome_fasta_file"])
 genome_ext = splitext_gz(genome_fasta)[1]
 genome = splitext_gz(genome_fasta)[0]
 
+if genome_fasta.endswith(".gz"):
+    genome_fasta_unzipped = os.path.splitext(config["genome_fasta_file"])[0]
+else:
+    genome_fasta_unzipped = config["genome_fasta_file"]
+
 gff_dir = os.path.dirname(config["genome_annotation_gff3_file"])
 gff_file = os.path.basename(config["genome_annotation_gff3_file"])
 gff_ext = splitext_gz(gff_file)[1]

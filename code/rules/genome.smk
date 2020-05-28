@@ -31,6 +31,14 @@ rule mito_gff_file:
         {output:q}
         """
 
+rule unzip:
+    input:
+        "{file}.gz"
+    output:
+        temp("{file}")
+    shell:
+        "gunzip -c {input:q} > {output:q}"
+
 rule mito_gff_file_utrs:
     input:
         mito_gff_file

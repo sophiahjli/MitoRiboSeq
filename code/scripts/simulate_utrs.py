@@ -8,7 +8,6 @@
 
 import argparse
 import logging
-import sys
 
 from plastid import GFF3_TranscriptAssembler
 from plastid import GenomicSegment

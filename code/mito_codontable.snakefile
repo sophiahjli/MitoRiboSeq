@@ -35,6 +35,7 @@ rule all_tables:
         mito_cumsum_table=config["results_dir"] + "/tables/mito_cumsum_table.csv"
 
 
+include: "rules/genome.smk"
 include: "rules/wiggle.smk"
 include: "rules/codon_count.smk"
 include: "rules/codon_occupancy.smk"
