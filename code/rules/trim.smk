@@ -2,7 +2,8 @@ rule cutadapt:
     input:
         get_fastq
     output:
-        fastq=config["working_dir"] + "/trimmed/{sample}.fastq.gz"
+        fastq=config["working_dir"] + "/trimmed/{sample}.fastq.gz",
+        qc=config["working_dir"] + "/trimmed/{sample}.qc.txt",
     params:
         extra=config["params"]["cutadapt"]["extra"]
     log:
@@ -14,8 +15,8 @@ rule cutadapt:
     shell:
       "cutadapt "
       "--adapter='CTGTAGGCACCATCAATATCTCGTATGCCGTCTTCTGCTTG' "
-      "--output={output:q} "
+      "--output={output.fastq:q} "
       "--cores={threads} "
       "{params.extra} "
       "{input:q} "
-      ">{log} 2>&1"
+      "> {output.qc:q} 2> {log:q}"

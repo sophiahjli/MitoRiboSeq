@@ -63,4 +63,17 @@ rule samtools_index:
     params:
         "" # optional params string
     wrapper:
-        "0.51.3/bio/samtools/index"
+        "0.59.2/bio/samtools/index"
+
+rule samtools_stats:
+    input:
+        config["results_dir"] + "/mapped/{sample}.bam"
+    output:
+        config["results_dir"] + "/samtools_stats/{sample}.txt"
+    params:
+        extra="",                       # Optional: extra arguments.
+    log:
+        log_dir + "/samtools_stats/{sample}.log"
+    wrapper:
+        "0.59.2/bio/samtools/stats"
+

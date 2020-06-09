@@ -1,6 +1,8 @@
 from snakemake.remote.FTP import RemoteProvider as FTPRemoteProvider
 FTP = FTPRemoteProvider()
 
+ruleorder: get_fasta_ftp > gunzip
+
 rule get_fasta_ftp:
     input:
         FTP.remote(config["genome_fasta_ftp"], keep_local=True)
@@ -14,6 +16,14 @@ rule get_gff_ftp:
         FTP.remote(config["genome_annotation_gff3_ftp"], keep_local=True)
     output:
         config["genome_annotation_gff3_file"]
+    shell:
+        "mv {input:q} {output:q}"
+
+rule get_gtf_ftp:
+    input:
+        FTP.remote(config["genome_annotation_gtf_ftp"], keep_local=True)
+    output:
+        config["genome_annotation_gtf_file"]
     shell:
         "mv {input:q} {output:q}"
 
@@ -31,13 +41,35 @@ rule mito_gff_file:
         {output:q}
         """
 
-rule unzip:
+rule gunzip:
     input:
         "{file}.gz"
     output:
         temp("{file}")
     shell:
         "gunzip -c {input:q} > {output:q}"
+
+# rule bgzip_gff:
+#     input:
+#         os.path.join(gff_dir, gff_file_ungz)
+#     output:
+#         os.path.join(gff_dir, gff_basename_noext + ".sorted.gff.gz")
+#     conda:
+#         "../envs/tabix.yml"
+#     shell:
+#         """
+#         (grep ^"#" {input:q}; grep -v ^"#" {input:q} | sort -k1,1 -k4,4n) | bgzip > {output:q}
+#         """
+# 
+# rule tabix_gff:
+#     input:
+#         os.path.join(gff_dir, gff_basename_noext + ".sorted.gff.gz")
+#     output:
+#         os.path.join(gff_dir, gff_basename_noext + ".sorted.gff.gz.tbi")
+#     conda:
+#         "../envs/tabix.yml"
+#     shell:
+#         "tabix -p gff {input:q}"
 
 rule mito_gff_file_utrs:
     input:
@@ -105,5 +137,57 @@ rule nd6_roi_file:
                 --annotation_files {input:q} \
                 --annotation_format GFF3 \
                 {params.outbase:q}
+        """
+
+# rule biotype_table:
+#     input:
+#         config["genome_annotation_gff3_file"]
+#     output:
+#         os.path.join(gff_dir, "{}.gene_biotype_table.txt".format(gff_basename_noext))
+#     shell:
+#         '''
+#         echo "#Gene biotype table" > {output:q}
+#         printf 'Geneid\\tgene_biotype\\n' >> {output:q}
+#         zcat -f {input:q} | \
+#             sed -rn 's/.*ID=gene:([^;]*);.*biotype=([^;]*).*/\\1\\t\\2/p' >> \
+#             {output:q}
+#         '''
+#             # sed -rn 's/([^\\t]*).*ID=gene:([^;]*);.*biotype=([^;]*).*/\\2\\t\\3\\t\\1/p' >> \
+
+rule gene_annotation_table:
+    input:
+        config["genome_annotation_gtf_file"]
+    output:
+        gene_annotation_table
+    shell:
+        """
+        zcat -f {input:q} | \
+            awk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print a[1]"\\t"a[3]"\\t"$1":"$4"-"$5"\\t"a[5]"\\t"$7}}' | \
+            sed 's/gene_id "//' | \
+            sed 's/gene_id "//' | \
+            sed 's/gene_biotype "//' | \
+            sed 's/gene_name "//' | \
+            sed 's/gene_biotype "//' | \
+            sed 's/"//g' | \
+            sed 's/ //g' | \
+            sed '1igene_id\\tGeneSymbol\\tChromosome\\tClass\\tStrand' > \
+            {output:q}
+        """
+
+rule gene_bed_file:
+    input:
+        config["genome_annotation_gtf_file"]
+    output:
+        genes_bed_file
+    conda:
+        "../envs/bedtools.yml"
+    shell:
+        """
+        zcat -f {input:q} | \
+            awk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print $1"\\t"$4-1"\\t"$5"\\t"a[1]"\\t.\\t"$7}}' | \
+            sed 's/gene_id "//' | \
+            sed 's/"//g' | \
+            bedtools sort > \
+            {output:q}
         """
 

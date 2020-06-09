@@ -11,6 +11,8 @@ genome_fasta_file: "genome/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz"
 # The gene annotations in GFF v3 format
 genome_annotation_gff3_ftp: "ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz"
 genome_annotation_gff3_file: "genome/Homo_sapiens.GRCh38.100.gff3.gz"
+genome_annotation_gtf_ftp: "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+genome_annotation_gtf_file: "genome/Homo_sapiens.GRCh38.100.gtf.gz"
 
 # Mitochondrial Chromosome ID
 mito_chrom_id: "MT"
