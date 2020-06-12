@@ -31,7 +31,7 @@ def main(args, loglevel):
     logging.debug("Building sequence dictionary")
     seq_dict = SeqIO.index(args.fasta, "fasta")
     logging.debug("Reading Annotations")
-    
+
     if args.gff:
         transcripts = list(
                 GFF3_TranscriptAssembler(open(args.gff),
@@ -40,15 +40,15 @@ def main(args, loglevel):
         transcripts = list(
                 GTF2_TranscriptAssembler(open(args.gtf),
                                          add_three_for_stop=args.add_three))
-        
+
     logging.debug("Reading Alignments")
     alignments = BAMGenomeArray([args.bam])
-    
-    if sum([args.threeprime,args.fiveprime]) !=1:
-        logging.error("Must specify only one and at least one mapping type (--fiveprime or --threeprime)")
+
+    if sum([args.threeprime, args.fiveprime]) != 1:
+        logging.error("Must specify only one and at least one mapping type "
+                      "(--fiveprime or --threeprime)")
         exit(1)
-        
-        
+
     if args.threeprime:
         alignments.set_mapping(ThreePrimeMapFactory(offset=args.offset))
     elif args.fiveprime:
@@ -58,8 +58,9 @@ def main(args, loglevel):
                                                     max=args.max_length))
     outfh = open(args.outfile, 'w')
     outfh.write("%s\n" % "\t".join(
-        ("gene_id", "gene_name", "codon_seq", "codon_index", "codon_count_sum",
-         "position_1_count", "position_2_count", "position_3_count")))
+        ("transcript_id", "gene_id", "codon_seq", "codon_index",
+         "codon_count_sum", "position_1_count", "position_2_count",
+         "position_3_count")))
     for (i, transcript) in enumerate(transcripts):
         if(i == 0 or (i + 1) % 100 == 0):
             logging.info("Evaluated %s genes" % (i + 1))
@@ -75,8 +76,8 @@ def main(args, loglevel):
             continue
         transcript_seq = transcript.get_cds().get_sequence(seq_dict)
         transcript_counts = transcript.get_cds().get_counts(alignments)
-        
-        if len(transcript_seq)%3  != 0:
+
+        if len(transcript_seq) % 3 != 0:
             logging.warn("Transcript %s length (%i) is not a multiple of "
                          "three, skipping!" % (transcript.get_name(),
                                                len(transcript_counts)))
@@ -90,9 +91,18 @@ def main(args, loglevel):
             codon_seq = transcript_seq[codon_start:codon_stop]
             codon_counts = transcript_counts[codon_start:codon_stop]
             codon_count_sum = sum(codon_counts)
+            transcript_id = transcript.get_name()
+            if ":" in transcript_id:
+                prefix, transcript_id = transcript_id.split(":", 1)
+            gene_ids_raw = transcript.attr.get("Parent", "")
+            gene_ids = []
+            for gene_id_raw in gene_ids_raw:
+                if ":" in gene_id_raw:
+                    prefix, gene_id = gene_id_raw.split(":", 1)
+                    gene_ids.append(gene_id)
             outfh.write("%s\t%s\t%s\t%i\t%i\t%i\t%i\t%i\n" %
-                        (transcript.get_name(),
-                         transcript.attr.get("gene", ""),
+                        (transcript_id,
+                         ",".join(gene_ids),
                          codon_seq, codon_index, codon_count_sum,
                          codon_counts[0], codon_counts[1],
                          codon_counts[2]))
@@ -111,7 +121,7 @@ if __name__ == '__main__':
                         metavar="FILE")
     parser.add_argument("--gtf", help="GTF file of gene annotations",
                         metavar="FILE")
-    
+
     parser.add_argument("--fasta", help="Fasta file of genomic sequence",
                         metavar="FILE", required=True)
     parser.add_argument("-o", "--outfile", help="Output filename",
@@ -122,9 +132,11 @@ if __name__ == '__main__':
                         "files that explicitly include `stop_codon` "
                         "features). Use if your annotation file excludes stop "
                         "codons from CDS.")
-                        
-    parser.add_argument("--threeprime",default=False,action = "store_true",help="Use three prime for the map")
-    parser.add_argument("--fiveprime",default=False,action = "store_true",help="Use five prime for the map")
+
+    parser.add_argument("--threeprime", default=False, action="store_true",
+                        help="Use three prime for the map")
+    parser.add_argument("--fiveprime", default=False, action="store_true",
+                        help="Use five prime for the map")
 
     parser.add_argument("--offset", help="Integer representing the offset "
                         "into the read, starting from the 3' end, at which "
