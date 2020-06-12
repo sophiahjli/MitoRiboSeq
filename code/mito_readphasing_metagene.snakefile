@@ -13,6 +13,7 @@ rule all:
         expand(config["results_dir"] + "/phasing_analysis/{sample}/{sample}_phasing.png", sample=samples.keys()),
         expand(config["results_dir"] + "/phasing_analysis/{sample}/{sample}_phasing.txt", sample=samples.keys())
 
+include: "rules/genome.smk"
 include: "rules/fastqc.smk"
 include: "rules/trim.smk"
 include: "rules/align.smk"

@@ -3,4 +3,4 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - plastid>=0.5.1
+    - bedtools=2.29.2

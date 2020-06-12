@@ -11,6 +11,7 @@ rule all:
         expand(config["working_dir"] + "/fastqc/{sample}_fastqc.zip", sample=samples.keys()),
         expand(config["results_dir"] + "/mapped/{sample}.bai", sample=samples.keys())
 
+include: "rules/genome.smk"
 include: "rules/fastqc.smk"
 include: "rules/trim.smk"
 include: "rules/align.smk"

@@ -1,7 +1,7 @@
 # Generate all the codon counts to single nucleotide resolution based on the offset
 rule codon_counts:
-    input: gff=config["genome_annotation_gff3_file"],
-           fasta=config["genome_fasta_file"],
+    input: gff=mito_gff_file,
+           fasta=genome_fasta_unzipped,
            counts=config["results_dir"] + "/mapped/{sample}.bam",
            counts_bai=config["results_dir"] + "/mapped/{sample}.bai"
     output: config["results_dir"] + "/codon_count/{sample}_codon_count.txt"

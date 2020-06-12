@@ -3,17 +3,30 @@
 fastq_file_pattern: "data/fastq/{sample}.fastq.gz"
 
 # Genome reference files
+
 # The genome reference sequence in fasta format
-genome_fasta_file: "genome/chrM.fa"
+genome_fasta_ftp: "ftp://ftp.ensembl.org/pub/release-100/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz"
+genome_fasta_file: "genome/Homo_sapiens.GRCh38.dna_sm.primary_assembly.fa.gz"
+
 # The gene annotations in GFF v3 format
-genome_annotation_gff3_file: "genome/chrM.gff3"
+genome_annotation_gff3_ftp: "ftp://ftp.ensembl.org/pub/release-100/gff3/homo_sapiens/Homo_sapiens.GRCh38.100.gff3.gz"
+genome_annotation_gff3_file: "genome/Homo_sapiens.GRCh38.100.gff3.gz"
+genome_annotation_gtf_ftp: "ftp://ftp.ensembl.org/pub/release-100/gtf/homo_sapiens/Homo_sapiens.GRCh38.100.gtf.gz"
+genome_annotation_gtf_file: "genome/Homo_sapiens.GRCh38.100.gtf.gz"
+
+# Mitochondrial Chromosome ID
+mito_chrom_id: "MT"
+
+# ND4 Gene ID - Start site is used as ROI
+nd4_gene_id: "ENSG00000198886"
+
+# ND6 Gene ID - Stop site is used as ROI
+nd6_gene_id: "ENSG00000198695"
 
 # Other genome information files
 # **TODO** Add file format infomation
 mito_info: "genome/Mito_GeneInfo.txt"
 mito_aminoacid_codon: "genome/AA_Codon_HumMito.csv"
-metagene_roi_nd4_file: "genome/chrM_orfs_start_rois_ND4.txt"
-metagene_roi_nd6_file: "genome/chrM_orfs_stop_rois_ND6.txt"
 
 
 # Output directories

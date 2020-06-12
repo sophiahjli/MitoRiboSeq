@@ -8,7 +8,7 @@ rule bwa_index:
         "{genome}.pac",
         "{genome}.sa"
     log:
-        "logs/bwa_index/{genome}.log"
+        log_dir + "/bwa_index/{genome}.log"
     params:
         prefix="{genome}",
         algorithm="bwtsw"
@@ -17,14 +17,19 @@ rule bwa_index:
 
 rule bwa_aln:
     input:
-        [config["working_dir"] + "/trimmed/{sample}.fastq.gz"]
+        [config["working_dir"] + "/trimmed/{sample}.fastq.gz"],
+        genome_amb=genome_dir + "/" + genome + ".amb",
+        genome_ann=genome_dir + "/" + genome + ".ann",
+        genome_bwt=genome_dir + "/" + genome + ".bwt",
+        genome_pac=genome_dir + "/" + genome + ".pac",
+        genome_sa=genome_dir + "/" + genome + ".sa"
     output:
-        [config["working_dir"] + "/trimmed/{sample}.sai"]
+        temp([config["working_dir"] + "/sai/{sample}.sai"])
     params:
         index=genome_dir + "/" + genome,
         extra=""
     log:
-        log_dir + "bwa_aln/{sample}.log"
+        log_dir + "/bwa_aln/{sample}.log"
     threads: 8
     wrapper:
         "0.51.3/bio/bwa/aln"
@@ -32,7 +37,7 @@ rule bwa_aln:
 rule bwa_samse:
     input:
         fastq=[config["working_dir"] + "/trimmed/{sample}.fastq.gz"],
-        sai=[config["working_dir"] + "/trimmed/{sample}.sai"],
+        sai=[config["working_dir"] + "/sai/{sample}.sai"],
         genome_amb=genome_dir + "/" + genome + ".amb",
         genome_ann=genome_dir + "/" + genome + ".ann",
         genome_bwt=genome_dir + "/" + genome + ".bwt",
@@ -41,7 +46,7 @@ rule bwa_samse:
     output:
         config["results_dir"] + "/mapped/{sample}.bam"
     log:
-        log_dir + "bwa_samse/{sample}.log"
+        log_dir + "/bwa_samse/{sample}.log"
     params:
         index=genome_dir + "/" + genome,
         extra=r"-r '@RG\tID:{sample}\tSM:{sample}'",
@@ -58,4 +63,17 @@ rule samtools_index:
     params:
         "" # optional params string
     wrapper:
-        "0.51.3/bio/samtools/index"
+        "0.59.2/bio/samtools/index"
+
+rule samtools_stats:
+    input:
+        config["results_dir"] + "/mapped/{sample}.bam"
+    output:
+        config["results_dir"] + "/samtools_stats/{sample}.txt"
+    params:
+        extra="",                       # Optional: extra arguments.
+    log:
+        log_dir + "/samtools_stats/{sample}.log"
+    wrapper:
+        "0.59.2/bio/samtools/stats"
+
