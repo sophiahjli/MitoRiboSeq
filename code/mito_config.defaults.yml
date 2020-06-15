@@ -23,10 +23,13 @@ nd4_gene_id: "ENSG00000198886"
 # ND6 Gene ID - Stop site is used as ROI
 nd6_gene_id: "ENSG00000198695"
 
+# Categories for each gene_biotype for summary statistics
+biotype_categories: "genome/biotype_categories.txt"
+
 # Other genome information files
 # **TODO** Add file format infomation
-mito_info: "genome/Mito_GeneInfo.txt"
 mito_aminoacid_codon: "genome/AA_Codon_HumMito.csv"
+mito_info: "genome/Mito_GeneInfo.txt"
 
 
 # Output directories

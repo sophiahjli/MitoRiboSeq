@@ -41,6 +41,7 @@ gtf_dir = os.path.dirname(config["genome_annotation_gtf_file"])
 gtf_basename = os.path.basename(config["genome_annotation_gtf_file"])
 gtf_basename_noext = splitext_gz(gtf_basename)[0]
 genes_bed_file = os.path.join(gtf_dir, "{}.genes.bed".format(gtf_basename_noext))
+nongenes_bed_file = os.path.join(gtf_dir, "{}.nongenes.bed".format(gtf_basename_noext))
 gene_annotation_table = os.path.join(gtf_dir, "{}.gene_annotation_table.txt".format(gtf_basename_noext))
 
 mito_gff_file = os.path.join(gff_dir, "{}.mito.gff".format(gff_basename_noext))

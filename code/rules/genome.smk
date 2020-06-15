@@ -7,9 +7,20 @@ rule get_fasta_ftp:
     input:
         FTP.remote(config["genome_fasta_ftp"], keep_local=True)
     output:
-        "{genome}" + genome_ext
+        config["genome_fasta_file"]
     shell:
         "mv {input:q} {output:q}"
+
+rule index_fasta:
+    input:
+        genome_fasta_unzipped
+    output:
+        genome_fasta_unzipped + ".fai"
+    params:
+        ""
+    wrapper:
+        "0.60.1/bio/samtools/faidx"
+
 
 rule get_gff_ftp:
     input:
@@ -60,7 +71,7 @@ rule gunzip:
 #         """
 #         (grep ^"#" {input:q}; grep -v ^"#" {input:q} | sort -k1,1 -k4,4n) | bgzip > {output:q}
 #         """
-# 
+
 # rule tabix_gff:
 #     input:
 #         os.path.join(gff_dir, gff_basename_noext + ".sorted.gff.gz")
@@ -176,18 +187,35 @@ rule gene_annotation_table:
 
 rule gene_bed_file:
     input:
-        config["genome_annotation_gtf_file"]
+        gtf=config["genome_annotation_gtf_file"],
+        fai=genome_fasta_unzipped + ".fai"
     output:
         genes_bed_file
     conda:
         "../envs/bedtools.yml"
     shell:
         """
-        zcat -f {input:q} | \
+        zcat -f {input.gtf:q} | \
             awk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print $1"\\t"$4-1"\\t"$5"\\t"a[1]"\\t.\\t"$7}}' | \
             sed 's/gene_id "//' | \
             sed 's/"//g' | \
-            bedtools sort > \
+            bedtools sort -faidx {input.fai:q} > \
+            {output:q}
+        """
+
+rule non_gene_bed_file:
+    input:
+        genes=genes_bed_file,
+        fai=genome_fasta_unzipped + ".fai"
+    output:
+        nongenes_bed_file
+    conda:
+        "../envs/bedtools.yml"
+    shell:
+        """
+        bedtools complement \
+            -g {input.fai:q} \
+            -i {input.genes:q} > \
             {output:q}
         """
 
