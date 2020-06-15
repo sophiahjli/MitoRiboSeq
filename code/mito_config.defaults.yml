@@ -25,7 +25,6 @@ nd6_gene_id: "ENSG00000198695"
 
 # Other genome information files
 # **TODO** Add file format infomation
-mito_info: "genome/Mito_GeneInfo.txt"
 mito_aminoacid_codon: "genome/AA_Codon_HumMito.csv"
 
 
