@@ -83,31 +83,46 @@ rule gene_counts_annotated:
         {output:q} 2> {log:q}
         """
 
-rule biotype_counts:
+rule biotype_counts_mitochondrial:
     input:
         config["results_dir"] + "/gene_counts/{sample}_{mapping_function}_{offset}_map_combined_gene_counts_annotated.tsv",
     output:
-        config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts.tsv",
+        config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts_mitochondrial.tsv",
     log:
         log_dir + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts.log",
     conda:
         "../envs/bedtools.yml"
     shell:
         """
-        (head -n 1 {input:q} && tail -n +2 {input:q} | sort -k9 ) \
-        | awk -v OFS='\\t' '{{\
-            if ($1 == "MT") {{ gsub(/Mt_/,"",$9); print $1,$2,$3,$4,$5,$6,$7,$8,"Mt_"$9,$10}} \
-            else {{ print $0 }} }}' \
+        echo -e 'gene_biotype\\tcount' > {output:q} && \
+        (head -n 1 {input:q} && tail -n +2 {input:q} | sort -k9 | grep "^{config[mito_chrom_id]}" ) \
         | bedtools groupby -g 9 -c 5 -o sum -inheader \
-        > {output:q} 2> {log:q}
+        >> {output:q} 2> {log:q}
+        """
+
+rule biotype_counts_cytosolic:
+    input:
+        config["results_dir"] + "/gene_counts/{sample}_{mapping_function}_{offset}_map_combined_gene_counts_annotated.tsv",
+    output:
+        config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts_cytosolic.tsv",
+    log:
+        log_dir + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts.log",
+    conda:
+        "../envs/bedtools.yml"
+    shell:
+        """
+        echo -e 'gene_biotype\\tcount' > {output:q} && \
+        (head -n 1 {input:q} && tail -n +2 {input:q} | sort -k9 | grep -v "^{config[mito_chrom_id]}" ) \
+        | bedtools groupby -g 9 -c 5 -o sum -inheader \
+        >> {output:q} 2> {log:q}
         """
 
 rule biotype_counts_with_category:
     input:
-        biotype_counts=config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts.tsv",
+        biotype_counts=config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts_{location}.tsv",
         biotype_categories=config["biotype_categories"]
     output:
-        biotype_counts=config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts_with_category.tsv",
+        biotype_counts=config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts_with_category_{location}.tsv",
     conda:
         "../envs/csvkit.yml"
     shell:
@@ -120,22 +135,24 @@ rule biotype_counts_with_category:
 
 rule category_counts:
     input:
-        config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts_with_category.tsv",
+        config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_biotype_counts_with_category_{location}.tsv",
     output:
-        config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_category_counts.tsv",
+        config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_category_counts_{location}.tsv",
     log:
-        log_dir + "/biotype_counts/{sample}_{mapping_function}_{offset}_category_counts.log",
+        log_dir + "/biotype_counts/{sample}_{mapping_function}_{offset}_category_counts_{location}.log",
     conda:
         "../envs/bedtools.yml"
     shell:
         """
-        bedtools groupby -g 3 -c 2 -o sum -i {input:q} \
+        bedtools groupby -inheader -g 3 -c 2 -o sum -i {input:q} \
+        | sed 's/^/{wildcards.location} /' \
         > {output:q} 2> {log:q}
         """
 
 rule summarized_counts:
     input:
-        category_counts=config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_category_counts.tsv",
+        category_counts_mitochondrial=config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_category_counts_mitochondrial.tsv",
+        category_counts_cytosolic=config["results_dir"] + "/biotype_counts/{sample}_{mapping_function}_{offset}_category_counts_cytosolic.tsv",
         non_gene_counts_fw=config["results_dir"] + "/gene_counts/{sample}_{mapping_function}_{offset}_map_fw_nongene_counts.tsv",
         non_gene_counts_rc=config["results_dir"] + "/gene_counts/{sample}_{mapping_function}_{offset}_map_rc_nongene_counts.tsv",
         samtools_stats=config["results_dir"] + "/samtools_stats/{sample}.txt"
@@ -143,7 +160,7 @@ rule summarized_counts:
         config["results_dir"] + "/summarized_counts/{sample}_{mapping_function}_{offset}_summary_counts.tsv",
     shell:
         """
-        cp {input.category_counts:q} {output:q} && \
+        cat {input.category_counts_cytosolic:q} {input.category_counts_mitochondrial:q} > {output:q} && \
         cat {input.non_gene_counts_fw:q} {input.non_gene_counts_rc:q} \
             | awk '{{s+=$4}} END {{printf "Unannotated\\t%.0f\\n", s}}' \
             >> {output:q} && \

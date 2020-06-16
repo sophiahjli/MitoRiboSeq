@@ -1,3 +1,4 @@
+gene_biotype	category
 IG_C_gene	mRNA
 IG_C_pseudogene	Pseudogene
 IG_D_gene	mRNA
@@ -9,8 +10,8 @@ IG_V_pseudogene	Pseudogene
 lncRNA	Other non-coding RNA
 miRNA	Other non-coding RNA
 misc_RNA	Other non-coding RNA
-Mt_rRNA	Mitochondrial rRNA
-Mt_tRNA	Mitochondrial tRNA
+Mt_rRNA	rRNA
+Mt_tRNA	tRNA
 polymorphic_pseudogene	Pseudogene
 processed_pseudogene	Pseudogene
 protein_coding	mRNA
@@ -38,46 +39,4 @@ TR_V_pseudogene	Pseudogene
 unitary_pseudogene	Pseudogene
 unprocessed_pseudogene	Pseudogene
 vaultRNA	Other non-coding RNA
-
-Mt_rRNA	Mitochondrial rRNA
-Mt_tRNA	Mitochondrial tRNA
-Mt_IG_C_gene	Mitochondrial mRNA
-Mt_IG_C_pseudogene	Mitochondrial Pseudogene
-Mt_IG_D_gene	Mitochondrial mRNA
-Mt_IG_J_gene	Mitochondrial mRNA
-Mt_IG_J_pseudogene	Mitochondrial Pseudogene
-Mt_IG_pseudogene	Mitochondrial Pseudogene
-Mt_IG_V_gene	Mitochondrial mRNA
-Mt_IG_V_pseudogene	Mitochondrial Pseudogene
-Mt_lncRNA	Mitochondrial Other non-coding RNA
-Mt_miRNA	Mitochondrial Other non-coding RNA
-Mt_misc_RNA	Mitochondrial Other non-coding RNA
-Mt_polymorphic_pseudogene	Mitochondrial Pseudogene
-Mt_processed_pseudogene	Mitochondrial Pseudogene
-Mt_protein_coding	Mitochondrial mRNA
-Mt_pseudogene	Mitochondrial Pseudogene
-Mt_ribozyme	Mitochondrial Other non-coding RNA
-Mt_rRNA	Mitochondrial rRNA
-Mt_rRNA_pseudogene	Mitochondrial Pseudogene
-Mt_scaRNA	Mitochondrial Other non-coding RNA
-Mt_scRNA	Mitochondrial Other non-coding RNA
-Mt_snoRNA	Mitochondrial Other non-coding RNA
-Mt_snRNA	Mitochondrial Other non-coding RNA
-Mt_sRNA	Mitochondrial Other non-coding RNA
-Mt_TEC	Mitochondrial mRNA
-Mt_transcribed_processed_pseudogene	Mitochondrial Pseudogene
-Mt_transcribed_unitary_pseudogene	Mitochondrial Pseudogene
-Mt_transcribed_unprocessed_pseudogene	Mitochondrial Pseudogene
-Mt_translated_processed_pseudogene	Mitochondrial Pseudogene
-Mt_translated_unprocessed_pseudogene	Mitochondrial Pseudogene
-Mt_TR_C_gene	Mitochondrial mRNA
-Mt_TR_D_gene	Mitochondrial mRNA
-Mt_TR_J_gene	Mitochondrial mRNA
-Mt_TR_J_pseudogene	Mitochondrial Pseudogene
-Mt_TR_V_gene	Mitochondrial Pseudogene
-Mt_TR_V_pseudogene	Mitochondrial Pseudogene
-Mt_unitary_pseudogene	Mitochondrial Pseudogene
-Mt_unprocessed_pseudogene	Mitochondrial Pseudogene
-Mt_vaultRNA	Mitochondrial Other non-coding RNA
-
 
