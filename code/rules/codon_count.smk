@@ -25,11 +25,12 @@ rule collapse_codon_counts:
   log: log_dir + "/codon_count/combine_codon_count.log"
   shell:
     """
+    head -1 {input[0]:q} | sed 's/$/\\tsample/' > {output:q}
     awk '
         function basename(file, a, n) {{
             n = split(file, a, "/")
             return a[n]
         }}
     BEGIN {{ OFS="\\t" }}
-    {{if (NR > 1) {{ fn=basename(FILENAME); sub("_codon_count.txt", "", fn); print $0, fn }} else {{ print $0, "sample" }} }}' {input:q} >> {output:q} 2> {log:q}
+    {{if ($1 !~ "transcript_id") {{ fn=basename(FILENAME); sub("_codon_count.txt", "", fn); print $0, fn }} }}' {input:q} >> {output:q} 2> {log:q}
     """

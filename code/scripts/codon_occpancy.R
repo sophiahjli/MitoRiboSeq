@@ -6,16 +6,19 @@ library(cowplot)
 #Load data #
 ############
 all_raw_data <- read_tsv(snakemake@input[["all_codon_count"]])
+all_raw_data <- read_tsv("results/codon_count/All_codoncount_table.txt")
 
 # Load the mapping where we can turn IDs into names that are easily identifiable
 mito_info <-read_tsv(snakemake@input[["mito_info"]])
+mito_info <- read_tsv("genome/Homo_sapiens.GRCh38.100.gene_annotation_table.txt")
 
 raw_data <- all_raw_data %>%
-  inner_join(., mito_info, by=c("gene_id"="UCSC_id")) %>%
-  select(gene_name=AssociatedGeneName, GeneType, sample, codon_seq, codon_index, codon_count_sum, Complex)
+  inner_join(., mito_info, by="gene_id") # %>%
+#  select(gene_name=AssociatedGeneName, GeneType, sample, codon_seq, codon_index, codon_count_sum, Complex)
 
 # Load the mitochondria codon table
 mito_aminoacid_codon <- read_csv(snakemake@input[["mito_aminoacid_codon"]])
+mito_aminoacid_codon <- read_csv("genome/AA_Codon_HumMito.csv")
 
 
 ####################################
@@ -26,15 +29,15 @@ mito_aminoacid_codon <- read_csv(snakemake@input[["mito_aminoacid_codon"]])
 # coverage is defined as the percentage of codons that have at least one mapped read per gene
 # depth is defined as the average number of mapped reads per gene
 
-mito_data_raw_coverage <- raw_data %>% group_by(sample,gene_name) %>%
+mito_data_raw_coverage <- raw_data %>% group_by(sample,GeneSymbol) %>%
   summarise(coverage = sum(codon_count_sum> 0)/n(), depth = sum(codon_count_sum)/n()) 
 
 mito_data_raw_coverage_bygene <- mito_data_raw_coverage %>%
-  select(sample, gene_name,coverage) %>%  spread(gene_name,coverage)
+  select(sample, GeneSymbol,coverage) %>%  spread(GeneSymbol,coverage)
 write_csv(mito_data_raw_coverage_bygene, path = snakemake@output[["mito_data_raw_coverage_bygene"]])
 
 mito_data_raw_depth_bygene <- mito_data_raw_coverage %>%
-  select(sample, gene_name,depth) %>% spread(gene_name,depth)
+  select(sample, GeneSymbol,depth) %>% spread(GeneSymbol,depth)
 write_csv(mito_data_raw_depth_bygene, path = snakemake@output[["mito_data_raw_depth_bygene"]])
 
 ##########################################
@@ -44,7 +47,7 @@ write_csv(mito_data_raw_depth_bygene, path = snakemake@output[["mito_data_raw_de
 # Normalize counts in each sample to RPM
 mito_data <- raw_data %>% select(-contains("position")) %>% group_by(sample) %>%
   mutate(RPM = codon_count_sum/sum(codon_count_sum, na.rm = TRUE) * 10^6 + 1) %>%
-  group_by(sample,gene_name) %>%
+  group_by(sample,GeneSymbol) %>%
   mutate(RPM_normgene = RPM/sum(RPM, na.rm = TRUE),
          RPM_cumsum = cumsum(RPM),
          RPM_cumsum_normgene = RPM_cumsum/sum(RPM, na.rm = TRUE)) %>% mutate(codon_seq = toupper(codon_seq))
@@ -53,8 +56,8 @@ mito_data_cumsum_plot <- mito_data %>% ggplot(aes(x=codon_index,y=RPM_cumsum_nor
   geom_line() +
   scale_y_continuous(labels = function(n) format(n,digits=2,scientific=T)) +
   theme(strip.background = element_blank(), aspect.ratio = 0.8) +
-  facet_wrap(~gene_name, scales = "free") +
-  facet_wrap(~gene_name, scales = "free_x") +
+  facet_wrap(~GeneSymbol, scales = "free") +
+  facet_wrap(~GeneSymbol, scales = "free_x") +
   ylab("Normalized cumulative ribosome occupancy")
 
 dir.create(snakemake@output[["figures"]])
@@ -72,8 +75,8 @@ calc_codon_occupancy <- function(data){
   # Occupancy is defined as the ratio between actual counts to expected counts, which is dependent on the codon frequency
   
   # This one takes the occupancy for codons in each gene first
-  occupancy_bygene <- data %>% group_by(gene_name) %>% mutate(gene_length = n()) %>% 
-    group_by(gene_name,codon_seq,gene_length) %>% summarise(codon_num = n(),RPM_normgene = sum(RPM_normgene)) %>% 
+  occupancy_bygene <- data %>% group_by(GeneSymbol) %>% mutate(gene_length = n()) %>% 
+    group_by(GeneSymbol,codon_seq,gene_length) %>% summarise(codon_num = n(),RPM_normgene = sum(RPM_normgene)) %>% 
     mutate(codon_freq = codon_num/gene_length,occupancy = RPM_normgene/codon_freq)
   # Then use the mean of occupancy from all genes to calculate the final occupancy
   occupancy_bygene_summary <- occupancy_bygene %>% group_by(codon_seq) %>% summarise(occupancy_bygene = mean(occupancy))
@@ -119,5 +122,5 @@ paths <- stringr::str_c(snakemake@output[["figures"]], "/", mito_occupancy$sampl
 pwalk(list(paths,mito_occupancy_plot$occu_plot), ggsave)
 
 # Save the occupancy table to a CSV file
-mito_occupancy_tab <- mito_occupancy %>% unnest()
+mito_occupancy_tab <- mito_occupancy %>% unnest(cols = c(occupancy))
 write_csv(x = mito_occupancy_tab, path = snakemake@output[["mito_occupancy_table"]])
