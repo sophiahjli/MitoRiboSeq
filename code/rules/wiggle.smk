@@ -7,7 +7,7 @@ rule bedgraph_specify_mapping:
         "../envs/plastid.yml"            
     params: base=config["results_dir"] + "/bedgraph/{sample}_{mapping_function}_{offset}_map"
     shell: 
-        """
+       """
         make_wiggle \
             -o {params.base:q} \
             --count_files {input.counts:q} \
@@ -16,5 +16,21 @@ rule bedgraph_specify_mapping:
             --{wildcards.mapping_function} \
             --offset {wildcards.offset} \
             --output_format bedgraph
+        """
+
+rule sort_bedgraph:
+    input:
+        bedgraph=config["results_dir"] + "/bedgraph/{sample}_{mapping_function}_{offset}_map_{strand}.wig",
+        fai=genome_fasta_unzipped + ".fai"
+    output:
+        config["results_dir"] + "/bedgraph/{sample}_{mapping_function}_{offset}_map_{strand}_sorted.wig",
+    conda:
+        "../envs/bedtools.yml"
+    shell:
+        """
+        bedtools sort \
+            -faidx {input.fai:q} \
+            -i {input.bedgraph:q} > \
+            {output:q}
         """
 
