@@ -18,10 +18,7 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 *   ROI files `metagene_roi_nd4_file` and `metagene_roi_nd6_file` created using the 
     [plastid `metagene generate`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) command
 *   Gene model in GTF format
-*   Additional genome information files
-    * `Mito_geneInfo.txt` - **TODO** ??? format file containing ???
-    * `AA_Codon_HumMito.csv` - **TODO** ??? format file containing ???
- *   Configuration file(s) in YAML format
+*   Configuration file(s) in YAML format
 
 ### Outputs
 
@@ -30,11 +27,11 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 *   `phasing_analysis` - [plastid `phaze_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
     output to estimate sub-codon phasing, stratified by read length.
 *   `wiggle` - [plastid `make_wiggle`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.make_wiggle.html#module-plastid.bin.make_wiggle) output. Genome browser tracks from read alignments, using mapping rules to extract ribosomal P-sites from the alignments.
-*   `codon_count` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non.*
-*   `metagene_10_200_mincount10` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum a.*
-*   `QC` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit.*
-*   `figures` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tristique.*
-*   `tables` - **TODO** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus.*
+*   `codon_count` - It contains the codon count table of all samples, separated and combined as one file.
+*   `metagene` - It contains the metagene analysis result from the plastid metagene program.
+*   `QC` - It contains all the QC of analysis, including read depth and coverage.
+*   `figures` - It contains all the figures.
+*   `tables` - It contains the cumulative codon counts for each gene and codon occupancy analysis results.
 
 #### Intermediate outputs
 
