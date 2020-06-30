@@ -1,4 +1,5 @@
 #shell.executable("bash")
+import pandas as pd
 
 snakemake.utils.min_version("5.15.0")
 
@@ -19,6 +20,9 @@ samples = dict((y[0], x) for x, y in sample_files)
 assert len(samples) > 0, "ERROR: No fastq files were found using pattern '{}' (set in configfile)".format(config["fastq_file_pattern"])
 
 log_dir = config["results_dir"] + "/logs"
+
+
+biotype_categories = pd.read_table(config["biotype_categories"]).set_index("gene_biotype", drop=False)
 
 genome_dir = os.path.dirname(config["genome_fasta_file"])
 genome_fasta = os.path.basename(config["genome_fasta_file"])
