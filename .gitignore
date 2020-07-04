@@ -14,3 +14,5 @@ genome/*.pac
 genome/*.sa
 genome/*.fa.gz
 genome/Homo_sapiens.GRCh38.*
+genome/biotype_lists/
+genome/biotype_category_lists/

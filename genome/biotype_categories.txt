@@ -7,23 +7,23 @@ IG_J_pseudogene	Pseudogene
 IG_pseudogene	Pseudogene
 IG_V_gene	mRNA
 IG_V_pseudogene	Pseudogene
-lncRNA	Other non-coding RNA
-miRNA	Other non-coding RNA
-misc_RNA	Other non-coding RNA
+lncRNA	Other-non-coding-RNA
+miRNA	Other-non-coding-RNA
+misc_RNA	Other-non-coding-RNA
 Mt_rRNA	rRNA
 Mt_tRNA	tRNA
 polymorphic_pseudogene	Pseudogene
 processed_pseudogene	Pseudogene
 protein_coding	mRNA
 pseudogene	Pseudogene
-ribozyme	Other non-coding RNA
+ribozyme	Other-non-coding-RNA
 rRNA	rRNA
 rRNA_pseudogene	Pseudogene
-scaRNA	Other non-coding RNA
-scRNA	Other non-coding RNA
-snoRNA	Other non-coding RNA
-snRNA	Other non-coding RNA
-sRNA	Other non-coding RNA
+scaRNA	Other-non-coding-RNA
+scRNA	Other-non-coding-RNA
+snoRNA	Other-non-coding-RNA
+snRNA	Other-non-coding-RNA
+sRNA	Other-non-coding-RNA
 TEC	mRNA
 transcribed_processed_pseudogene	Pseudogene
 transcribed_unitary_pseudogene	Pseudogene
@@ -38,5 +38,5 @@ TR_V_gene	Pseudogene
 TR_V_pseudogene	Pseudogene
 unitary_pseudogene	Pseudogene
 unprocessed_pseudogene	Pseudogene
-vaultRNA	Other non-coding RNA
+vaultRNA	Other-non-coding-RNA
 
