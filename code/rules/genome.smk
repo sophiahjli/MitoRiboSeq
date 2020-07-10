@@ -56,7 +56,7 @@ rule gunzip:
     input:
         "{file}.gz"
     output:
-        temp("{file}")
+        "{file}"
     shell:
         "gunzip -c {input:q} > {output:q}"
 

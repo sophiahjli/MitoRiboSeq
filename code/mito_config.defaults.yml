@@ -45,7 +45,7 @@ params:
     extra: ""
   bwa:
     # optional bwa aln parameters
-    extra: ""
+    extra: "-n 0.02"
   cutadapt:
     # optional parameters
     extra: ""
