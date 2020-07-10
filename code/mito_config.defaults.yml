@@ -38,6 +38,8 @@ working_dir: "results/working"
 # Directory to store final results (count matrix, summary reports)
 results_dir: "results"
 
+# Generate summary counts for gene biotypes
+biotype_summary_counts: False
 
 # Parameters used for each step of the workflow
 params:

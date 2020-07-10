@@ -14,14 +14,20 @@ rule stage_multiqc_summary_counts:
         cp {input:q} {output:q}
         """
 
+def get_multiqc_files(wildcards):
+    multiqc_files = (
+        expand(config["working_dir"] + "/fastqc/{sample}_fastqc.zip", sample=samples.keys()) + 
+        expand(config["working_dir"] + "/trimmed/{sample}.qc.txt", sample=samples.keys()) +
+        expand(config["results_dir"] + "/samtools_stats/{sample}.txt", sample=samples.keys())
+    )
+    if config["biotype_summary_counts"]:
+        multiqc_files.extend(expand(config["results_dir"] + "/summarized_counts/{sample}_summary_counts_mqc.tsv",
+                       sample=samples.keys()))
+    return(multiqc_files)
+
 rule multiqc:
     input:
-        expand(config["working_dir"] + "/fastqc/{sample}_fastqc.zip", sample=samples.keys()),
-        expand(config["working_dir"] + "/trimmed/{sample}.qc.txt", sample=samples.keys()),
-        expand(config["results_dir"] + "/samtools_stats/{sample}.txt", sample=samples.keys()),
-        # expand(config["results_dir"] + "/featurecounts/{sample}_counts.tsv.summary", sample=samples.keys()),
-        expand(config["results_dir"] + "/summarized_counts/{sample}_summary_counts_mqc.tsv",
-               sample=samples.keys()),
+        get_multiqc_files
     output:
         config["results_dir"] + "/qc/multiqc.html"
     params:
