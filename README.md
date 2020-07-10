@@ -1,4 +1,5 @@
 # MitoRiboSeq
+
 This workflow is used to generate codon- and gene-based analysis from mitochondrial ribosome profiling data generated using the protocols described in Monitoring mitochondrial translation with ribosome profiling in Nature Protocol by Li et al. 2019 [ref link].
 
 Dependencies are installed using [Bioconda](https://bioconda.github.io/).
@@ -7,31 +8,29 @@ The workflow is written using [Snakemake](https://snakemake.readthedocs.io/).
 
 ## Overview
 
-This workflow is designed to take FASTQ files from the Illumina sequencer to map each mitoribosome footprint to its occupied A-site. This mapping will allow detailed monitor of mitoribosome translation dynamics. 
+This workflow is designed to take FASTQ files from the Illumina sequencer and map each mitoribosome footprint to its occupied A-site. This mapping will allow detailed monitoring of mitoribosome translation dynamics. 
 
-Starting with FASTQ files, the workflow is divided grossly into three parts: QC and metagene analysis, A-site assignment and codon count table generation, and downstream codon occupancy and cumulative ribosome occupancy analysis. In the first part, the workflow will run a QC, align all the reads to the genome, and do metagene gene analysis to produce a file where the user can determine the best offset to assign the ribosomal A-site. Once the offset is determined, all the reads will be assigned to the A-site at nucleotide level and a codon count table where the counts for each codon in each gene are arranged in a table to facilitate downstream analysis. Two common analysis we routinely used such as codon occupancy analysis and cumulative mitoribosome footprint along the transcript will be provided to visaulize mitoribosome distribution on mitochondria-encoded genes.
+Starting with FASTQ files, the workflow is divided into three main parts: QC and metagene analysis, A-site assignment and codon count table generation, and downstream codon occupancy and cumulative ribosome occupancy analysis. In the first part, the workflow will run QC on the input FASTQ files, align all of the reads to the genome, and perform a metagene analysis. The metagene analysis helps the user to determine the offset from the 5' end of the read to the ribosomal A-site. Once the offset is determined, all of the reads will be assigned to the A-site at the nucleotide level and the counts for each codon in each gene are arranged in a table to facilitate downstream analysis. Two common analyses, codon occupancy analysis and cumulative mitoribosome footprint along the transcript, are provided to visaulize mitoribosome distribution on mitochondria-encoded genes.
 
 ### Inputs
 
-*   Reference sequence in FASTA format
 *   FASTQ files for each sample
-*   ROI files `metagene_roi_nd4_file` and `metagene_roi_nd6_file` created using the 
-    [plastid `metagene generate`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) command
-*   Gene model in GTF format
 *   Configuration file(s) in YAML format
+*   Reference sequence in FASTA format (by default this is obtained from Ensembl)
+*   Gene model in GTF format (by default this is obtained from Ensembl)
 
 ### Outputs
 
-*   `mapping` - BAM alignment files 
-*   `metagene` - [plastid `metagene count`] output for both the `metagene_roi_nd4_file` and the `metagene_roi_nd6_file` specified in the config
+*   `mapped` - BAM alignment files 
+*   `metagene` - [plastid `metagene count`] output for both the `nd4_gene_id` and the `nd6_gene_id` specified in the config
+*   `codon_count` - codon count table of all samples, separated and combined as one file
 *   `phasing_analysis` - [plastid `phaze_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
     output to estimate sub-codon phasing, stratified by read length.
-*   `wiggle` - [plastid `make_wiggle`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.make_wiggle.html#module-plastid.bin.make_wiggle) output. Genome browser tracks from read alignments, using mapping rules to extract ribosomal P-sites from the alignments.
-*   `codon_count` - It contains the codon count table of all samples, separated and combined as one file.
-*   `metagene` - It contains the metagene analysis result from the plastid metagene program.
-*   `QC` - It contains all the QC of analysis, including read depth and coverage.
-*   `figures` - It contains all the figures.
-*   `tables` - It contains the cumulative codon counts for each gene and codon occupancy analysis results.
+*   `bedgraph` - [plastid `make_wiggle`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.make_wiggle.html#module-plastid.bin.make_wiggle) output. Genome browser tracks from read alignments, using mapping rules to extract ribosomal A-sites from the alignments
+*   `QC` - the quality control analysis, including read depth and coverage
+*   `figures` - all the figures
+*   `tables` - cumulative codon counts for each gene and codon occupancy analysis results
+*   `logs` - logs from each of the workflow steps, used in troubleshooting
 
 #### Intermediate outputs
 
@@ -47,7 +46,7 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 5.  **Read Phasing Analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) script
     [`phase_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size) 
     to estimate [sub-codon phasing](https://plastid.readthedocs.io/en/latest/glossary.html#term-sub-codon-phasing), stratified by read length
-6.  **Visualize** - visalize the ribosomal P-site coverage by generating genome browser tracks (wiggle format)
+6.  **Visualize** - visualize the ribosomal A-site coverage by generating genome browser tracks (wiggle format)
 7.  **Codon Analysis** - Use [plastid](https://plastid.readthedocs.io/en/latest/) to generate ribosomal occupancy counts per codon
 8.  **Read Length Distribution** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor.*
 9.  **Codon Occupancy** - Written in R, *lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend.*
@@ -80,16 +79,9 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 
 2.  Input data
 
-    1.  *FASTQ* files - the FASTQ data from the sequencer should
-        be stored in `data/fastq` in `fastq.gz` format, one file
-        per sample.
-    2.  *Genome* files
-        1. The genome reference sequence in fasta format
-        2. The gene annotations in GFF v3 format
-        3. Mitochondrial gene info file  # **TODO** Describe format
-        4. Mitochondrial amino acid codon table  # **TODO** Describe format
-        5. Mitochondrial orfs start rois ND4  # **TODO** Describe format
-        6. Mitochondrial orfs stop rois ND6  # **TODO** Describe format
+    *FASTQ* files - the FASTQ data from the sequencer should
+    be stored in `data/fastq` in `fastq.gz` format, one file
+    per sample.
 
 3.  Edit configuration files as needed
 
@@ -122,7 +114,11 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 6.  Execute the trimming, mapping, read phasing, and metagene workflow
 
     ```bash
-    snakemake --configfile "code/mito_config.yml" --use-conda -s code/mito_readphasing_metagene.snakefile
+    snakemake \
+         -s code/mito_readphasing_metagene.snakefile \
+         --configfile "code/mito_config.yml" \
+         --use-conda \
+         --cores 4
     ```
     
     If `--configfile` is not specified, the defaults are used.
@@ -130,18 +126,24 @@ Starting with FASTQ files, the workflow is divided grossly into three parts: QC 
 7.  Execute the codon occupancy workflow
 
     ```bash
-    snakemake --configfile "code/mito_config.yml" --use-conda -s code/mito_codontable.snakefile
+    snakemake \
+         -s code/mito_codontable.snakefile \
+         --configfile "code/mito_config.yml" \
+         --use-conda \
+         --cores 4
     ```
 
 ## Common snakemake options
 
+
+*   `--cores` -  Use at most N CPU cores/jobs in parallel. If N is omitted or 'all', the limit is set to the number of available CPU cores. **Required**
 *   `--configfile "myconfig.yml"` - Override defaults using the configuration found in `myconfig.yml`
-*   `--use-conda` - Use [conda]() to create an environment for each rule, installing and using the exact version of the software required (recommended)
-*   `--cores` - Use at most N cores in parallel (default: 1). If N is omitted, the limit is set to the number of available cores.
-*   `--cluster` - Execute snakemake rules with the given submit command, *e.g.* `qsub`. Snakemake compiles jobs into scripts that are submitted to the cluster with the given command, once all input files for a particular job are present. The submit command can be decorated to make it aware of certain job properties (input, output, params, wildcards, log, threads and dependencies (see the argument below)), *e.g.*: `$ snakemake –cluster ‘qsub -pe threaded {threads}’`.
-*   `--drmaa` - Execute snakemake on a cluster accessed via [DRMAA](https://en.wikipedia.org/wiki/DRMAA). Snakemake compiles jobs into scripts that are submitted to the cluster with the given command, once all input files for a particular job are present. `ARGS` can be used to specify options of the underlying cluster system, thereby using the job properties input, output, params, wildcards, log, threads and dependencies, *e.g.*: `--drmaa ‘ -pe threaded {threads}’`. Note that `ARGS` must be given in quotes and with a leading whitespace.
-*   `--cluster-config` - A JSON or YAML file that defines the wildcards used in `cluster` for specific rules, instead of having them specified in the Snakefile. For example, for rule `job` you may define: `{ ‘job’ : { ‘time’ : ‘24:00:00’ } }` to specify the time for rule `job`. You can specify more than one file. The configuration files are merged with later values overriding earlier ones.
 *   `--dryrun` - Do not execute anything, and display what would be done. If you have a very large workflow, use `--dryrun --quiet` to just print a summary of the DAG of jobs.
+*   `--use-conda` - Use [conda](http://conda.io) to create an environment for each rule, installing and using the exact version of the software required (*recommended*)
+*   `--cluster` - Execute snakemake rules with the given submit command, *e.g.* `qsub`. Snakemake compiles jobs into scripts that are submitted to the cluster with the given command, once all input files for a particular job are present. The submit command can be decorated to make it aware of certain job properties (input, output, params, wildcards, log, threads and dependencies (see the argument below)), *e.g.*: `$ snakemake –cluster ‘qsub -pe threaded {threads}’`.
+*   `--cluster-config` - A JSON or YAML file that defines the wildcards used in `cluster` for specific rules, instead of having them specified in the Snakefile. For example, for rule `job` you may define: `{ ‘job’ : { ‘time’ : ‘24:00:00’ } }` to specify the time for rule `job`. You can specify more than one file. The configuration files are merged with later values overriding earlier ones.
+*   `--set-threads [RULE=THREADS [RULE=THREADS ...]]` -  Overwrite thread usage of rules. This allows to fine-tune workflow parallelization. In particular, this is helpful to target certain cluster nodes by e.g. shifting a rule to use more, or less threads than defined in the workflow. Thereby, THREADS has to be a positive integer, and RULE has to be the name of the rule. (default: None)
+*   `--drmaa` - Execute snakemake on a cluster accessed via [DRMAA](https://en.wikipedia.org/wiki/DRMAA). Snakemake compiles jobs into scripts that are submitted to the cluster with the given command, once all input files for a particular job are present. `ARGS` can be used to specify options of the underlying cluster system, thereby using the job properties input, output, params, wildcards, log, threads and dependencies, *e.g.*: `--drmaa ‘ -pe threaded {threads}’`. Note that `ARGS` must be given in quotes and with a leading whitespace.
 
 See the [Snakemake documentation for a list of all options](https://snakemake.readthedocs.io/en/stable/executable.html#all-options).
 
