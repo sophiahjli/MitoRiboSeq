@@ -45,27 +45,15 @@ biotype_summary_counts: False
 params:
   fastqc:
     extra: ""
-  star:
-    # optional star parameters
-    extra: ""
-    # Command to unzip gzip files to stdout (zcat, gzcat, etc.)
-    zcat_command: "zcat"
+  bwa:
+    # optional bwa aln parameters
+    extra: "-n 0.02"
   cutadapt:
     # optional parameters
     extra: ""
-  nudup:
-    umi_length: 8
-    umi_start: 8
-    tmp_dir: "/tmp"
-    # optional parameters
-    extra: ""
-  featurecounts:
-    feature_type: "exon"
-    attribute_type: "gene_id"
-    extra: "-Q 50"
   plastid:
     # `offset` is obtained after running "mito_readphasing_metagene.snakefile"
     offset: 14
     min_length: 15
     max_length: 45
-    mapping_function: threeprime
+    mapping_function: "threeprime"

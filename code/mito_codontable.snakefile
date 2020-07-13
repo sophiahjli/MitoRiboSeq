@@ -44,6 +44,7 @@ rule all_biotype_counts:
  
 
 include: "rules/genome.smk"
+include: "rules/align.smk"
 include: "rules/wiggle.smk"
 include: "rules/gene_counts.smk"
 include: "rules/codon_count.smk"

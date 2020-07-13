@@ -27,7 +27,7 @@ rule bwa_aln:
         temp([config["working_dir"] + "/sai/{sample}.sai"])
     params:
         index=genome_dir + "/" + genome,
-        extra=""
+        extra=config["params"]["bwa"]["extra"]
     log:
         log_dir + "/bwa_aln/{sample}.log"
     threads: 8
