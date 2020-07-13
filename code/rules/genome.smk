@@ -3,6 +3,13 @@ FTP = FTPRemoteProvider()
 
 ruleorder: get_fasta_ftp > gunzip
 
+rule all_downloads:
+    input:
+        config["genome_fasta_file"],
+        config["genome_annotation_gff3_file"],
+        config["genome_annotation_gtf_file"],
+
+
 rule get_fasta_ftp:
     input:
         FTP.remote(config["genome_fasta_ftp"], keep_local=True)
