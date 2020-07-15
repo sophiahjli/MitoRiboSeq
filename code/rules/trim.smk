@@ -1,3 +1,8 @@
+rule all_trim:
+    input:
+        fastq=expand(config["working_dir"] + "/trimmed/{sample}.fastq.gz", sample=samples.keys()),
+        qc=expand(config["working_dir"] + "/trimmed/{sample}.qc.txt", sample=samples.keys())
+
 rule cutadapt:
     input:
         get_fastq
@@ -5,18 +10,10 @@ rule cutadapt:
         fastq=config["working_dir"] + "/trimmed/{sample}.fastq.gz",
         qc=config["working_dir"] + "/trimmed/{sample}.qc.txt",
     params:
-        extra=config["params"]["cutadapt"]["extra"]
+        extra=config["params"]["cutadapt"]["params"]
     log:
         log_dir + "/cutadapt/{sample}.log"
-    threads:
-        6
-    conda:
-        "../envs/cutadapt.yml"
-    shell:
-      "cutadapt "
-      "--adapter='CTGTAGGCACCATCAATATCTCGTATGCCGTCTTCTGCTTG' "
-      "--output={output.fastq:q} "
-      "--cores={threads} "
-      "{params.extra} "
-      "{input:q} "
-      "> {output.qc:q} 2> {log:q}"
+    threads: 5
+    wrapper:
+        "0.63.0/bio/cutadapt/se"
+

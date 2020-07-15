@@ -2,6 +2,7 @@
 # that corresponds to the sample name (e.g. data/{sample}.fq.gz)
 fastq_file_pattern: "data/fastq/{sample}.fastq.gz"
 
+
 # Genome reference files
 
 # The genome reference sequence in fasta format
@@ -23,6 +24,8 @@ nd4_gene_id: "ENSG00000198886"
 # ND6 Gene ID - Stop site is used as ROI
 nd6_gene_id: "ENSG00000198695"
 
+# Generate summary counts for gene biotypes
+biotype_summary_counts: False
 # Categories for each gene_biotype for summary statistics
 biotype_categories: "genome/biotype_categories.txt"
 
@@ -38,8 +41,6 @@ working_dir: "results/working"
 # Directory to store final results (count matrix, summary reports)
 results_dir: "results"
 
-# Generate summary counts for gene biotypes
-biotype_summary_counts: False
 
 # Parameters used for each step of the workflow
 params:
@@ -49,8 +50,8 @@ params:
     # optional bwa aln parameters
     extra: "-n 0.02"
   cutadapt:
-    # optional parameters
-    extra: ""
+    # parameters
+    params: "--adapter='CTGTAGGCACCATCAATATCTCGTATGCCGTCTTCTGCTTG' "
   plastid:
     # `offset` is obtained after running "mito_readphasing_metagene.snakefile"
     offset: 14
