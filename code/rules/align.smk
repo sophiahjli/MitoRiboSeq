@@ -1,3 +1,8 @@
+rule all_align:
+    input:
+        expand(config["results_dir"] + "/mapped/{sample}.bai", sample=samples.keys())
+
+
 rule bwa_index:
     input:
         "{genome}" + genome_ext
@@ -30,7 +35,7 @@ rule bwa_aln:
         extra=config["params"]["bwa"]["extra"]
     log:
         log_dir + "/bwa_aln/{sample}.log"
-    threads: 8
+    threads: 10
     wrapper:
         "0.51.3/bio/bwa/aln"
 
@@ -53,7 +58,7 @@ rule bwa_samse:
         sort="samtools",             # Can be 'none', 'samtools' or 'picard'.
         sort_order="coordinate",  # Can be 'queryname' or 'coordinate'.
         sort_extra=""            # Extra args for samtools/picard.
-    threads: 8
+    threads: 10
     wrapper:
         "0.51.3/bio/bwa/samse"
 
