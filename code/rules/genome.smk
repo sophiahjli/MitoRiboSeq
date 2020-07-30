@@ -63,7 +63,8 @@ rule gunzip:
     input:
         "{file}.gz"
     output:
-        "{file}"
+        # This crazy regex actually means the output can't end in `.gz`
+        "{file,^((?!\.gz).)*$}"
     shell:
         "gunzip -c {input:q} > {output:q}"
 
