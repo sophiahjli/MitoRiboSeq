@@ -54,7 +54,7 @@ rule mito_gff_file:
         mito_chrom_id=config["mito_chrom_id"]
     shell:
         """
-        zcat -f {input:q} | \
+        gzip -dcf {input:q} | \
         grep -E '(^##[^#]|^{params.mito_chrom_id})' >\
         {output:q}
         """
@@ -158,21 +158,6 @@ rule nd6_roi_file:
                 {params.outbase:q}
         """
 
-# rule biotype_table:
-#     input:
-#         config["genome_annotation_gff3_file"]
-#     output:
-#         os.path.join(gff_dir, "{}.gene_biotype_table.txt".format(gff_basename_noext))
-#     shell:
-#         '''
-#         echo "#Gene biotype table" > {output:q}
-#         printf 'Geneid\\tgene_biotype\\n' >> {output:q}
-#         zcat -f {input:q} | \
-#             sed -rn 's/.*ID=gene:([^;]*);.*biotype=([^;]*).*/\\1\\t\\2/p' >> \
-#             {output:q}
-#         '''
-#             # sed -rn 's/([^\\t]*).*ID=gene:([^;]*);.*biotype=([^;]*).*/\\2\\t\\3\\t\\1/p' >> \
-
 rule gene_annotation_table:
     input:
         config["genome_annotation_gtf_file"]
@@ -180,7 +165,7 @@ rule gene_annotation_table:
         gene_annotation_table
     shell:
         """
-        zcat -f {input:q} | \
+        gzip -dcf {input:q} | \
             awk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print a[1]"\\t"a[3]"\\t"$1":"$4"-"$5"\\t"a[5]"\\t"$7}}' | \
             sed 's/gene_id "//' | \
             sed 's/gene_id "//' | \
@@ -203,7 +188,7 @@ rule gene_bed_file:
         "../envs/bedtools.yml"
     shell:
         """
-        zcat -f {input.gtf:q} | \
+        gzip -dcf {input.gtf:q} | \
             awk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print $1"\\t"$4-1"\\t"$5"\\t"a[1]"\\t.\\t"$7}}' | \
             sed 's/gene_id "//' | \
             sed 's/"//g' | \
