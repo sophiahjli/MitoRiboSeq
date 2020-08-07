@@ -33,12 +33,12 @@ def main(args, loglevel):
                 new_region = GenomicSegment(
                         span.chrom,
                         span.start - args.upstream_utr_length,
-                        span.end,
+                        span.end + args.downstream_utr_length,
                         span.strand)
             else:
                 new_region = GenomicSegment(
                         span.chrom,
-                        span.start,
+                        span.start - args.downstream_utr_length,
                         span.end + args.upstream_utr_length,
                         span.strand)
             # copy metadata attributes from old ORF
@@ -63,6 +63,9 @@ def parse_arguments(input_args=None):
                         metavar="OUTPUT_FILE")
     parser.add_argument("--upstream_utr_length", type=int, default=50,
                         help="Length of simulated upstream UTR "
+                        "(default: %(default)s)")
+    parser.add_argument("--downstream_utr_length", type=int, default=50,
+                        help="Length of simulated downstream UTR "
                         "(default: %(default)s)")
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
