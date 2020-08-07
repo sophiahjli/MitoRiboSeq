@@ -20,17 +20,19 @@ rule codon_counts:
             -o "{output}" 2> "{log}"'
 
 rule collapse_codon_counts:
-  input: expand(config["results_dir"] + "/codon_count/{sample}_codon_count.txt", sample=samples.keys()),
-  output: config["results_dir"] + "/codon_count/All_codoncount_table.txt"
-  log: log_dir + "/codon_count/combine_codon_count.log"
-  shell:
-    """
-    head -1 {input[0]:q} | sed 's/$/\\tsample/' > {output:q}
-    awk '
-        function basename(file, a, n) {{
-            n = split(file, a, "/")
-            return a[n]
-        }}
-    BEGIN {{ OFS="\\t" }}
-    {{if ($1 !~ "transcript_id") {{ fn=basename(FILENAME); sub("_codon_count.txt", "", fn); print $0, fn }} }}' {input:q} >> {output:q} 2> {log:q}
-    """
+    input: expand(config["results_dir"] + "/codon_count/{sample}_codon_count.txt", sample=samples.keys()),
+    output: config["results_dir"] + "/codon_count/All_codoncount_table.txt"
+    log: log_dir + "/codon_count/combine_codon_count.log"
+    conda:
+        "../envs/gawk.yml"
+    shell:
+        """
+        head -1 {input[0]:q} | sed 's/$/\\tsample/' > {output:q}
+        gawk '
+            function basename(file, a, n) {{
+                n = split(file, a, "/")
+                return a[n]
+            }}
+        BEGIN {{ OFS="\\t" }}
+        {{if ($1 !~ "transcript_id") {{ fn=basename(FILENAME); sub("_codon_count.txt", "", fn); print $0, fn }} }}' {input:q} >> {output:q} 2> {log:q}
+        """

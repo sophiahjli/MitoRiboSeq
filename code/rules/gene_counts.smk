@@ -158,14 +158,16 @@ rule summarized_counts:
         samtools_stats=config["results_dir"] + "/samtools_stats/{sample}.txt"
     output:
         config["results_dir"] + "/summarized_counts/{sample}_{mapping_function}_{offset}_summary_counts.tsv",
+    conda:
+        "../envs/gawk.yml"
     shell:
         """
         cat {input.category_counts_cytosolic:q} {input.category_counts_mitochondrial:q} > {output:q} && \
         cat {input.non_gene_counts_fw:q} {input.non_gene_counts_rc:q} \
-            | awk '{{s+=$4}} END {{printf "Unannotated\\t%.0f\\n", s}}' \
+            | gawk '{{s+=$4}} END {{printf "Unannotated\\t%.0f\\n", s}}' \
             >> {output:q} && \
         cat {input.samtools_stats:q} \
             | grep -P "^SN\\treads unmapped:" \
-            | awk 'BEGIN{{FS="\\t"}}{{printf "Unmapped\\t%s\\n", $3}}' \
+            | gawk 'BEGIN{{FS="\\t"}}{{printf "Unmapped\\t%s\\n", $3}}' \
             >> {output:q}
         """

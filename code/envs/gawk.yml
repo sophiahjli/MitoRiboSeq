@@ -3,6 +3,5 @@ channels:
     - bioconda
     - defaults
 dependencies:
-    - bedtools=2.29.2
     - gawk
-    - sed
+    - sed 

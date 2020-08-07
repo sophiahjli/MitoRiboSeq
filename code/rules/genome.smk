@@ -163,10 +163,12 @@ rule gene_annotation_table:
         config["genome_annotation_gtf_file"]
     output:
         gene_annotation_table
+    conda:
+        "../envs/gawk.yml"
     shell:
         """
         gzip -dcf {input:q} | \
-            awk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print a[1]"\\t"a[3]"\\t"$1":"$4"-"$5"\\t"a[5]"\\t"$7}}' | \
+            gawk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print a[1]"\\t"a[3]"\\t"$1":"$4"-"$5"\\t"a[5]"\\t"$7}}' | \
             sed 's/gene_id "//' | \
             sed 's/gene_id "//' | \
             sed 's/gene_biotype "//' | \
@@ -189,7 +191,7 @@ rule gene_bed_file:
     shell:
         """
         gzip -dcf {input.gtf:q} | \
-            awk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print $1"\\t"$4-1"\\t"$5"\\t"a[1]"\\t.\\t"$7}}' | \
+            gawk 'BEGIN{{FS="\\t"}}{{split($9,a,";"); if($3~"gene") print $1"\\t"$4-1"\\t"$5"\\t"a[1]"\\t.\\t"$7}}' | \
             sed 's/gene_id "//' | \
             sed 's/"//g' | \
             bedtools sort -faidx {input.fai:q} > \

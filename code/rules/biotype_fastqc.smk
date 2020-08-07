@@ -35,10 +35,12 @@ rule cytosolic_biotype_list:
         gene_annotation_table
     output:
         genome_dir + "/biotype_lists/cytosolic_{biotype}_list.txt",
+    conda:
+        "../envs/gawk.yml"
     shell:
         """
         grep {wildcards.biotype:q} {input:q} | \
-        awk '$3 !~ /^MT.*/' > {output:q}
+        gawk '$3 !~ /^MT.*/' > {output:q}
         """
 
 rule mitochondrial_biotype_list:
@@ -46,10 +48,12 @@ rule mitochondrial_biotype_list:
         gene_annotation_table
     output:
         genome_dir + "/biotype_lists/mitochondrial_{biotype}_list.txt"
+    conda:
+        "../envs/gawk.yml"
     shell:
         """
         grep {wildcards.biotype:q} {input:q} | \
-        awk '$3 ~ /^MT.*/' > {output:q}
+        gawk '$3 ~ /^MT.*/' > {output:q}
         """
 
 rule biotype_category_bed:
@@ -63,7 +67,7 @@ rule biotype_category_bed:
     shell:
         """
         cat {input.biotype_lists:q} | \
-        awk -v OFS='\\t' '{{split($3, region, ":"); split(region[2], location, "-"); print region[1],location[1]-1,location[2],$1,$2,$5}}' | \
+        gawk -v OFS='\\t' '{{split($3, region, ":"); split(region[2], location, "-"); print region[1],location[1]-1,location[2],$1,$2,$5}}' | \
         bedtools sort -g {input.genome:q} > \
         {output:q}
         """
