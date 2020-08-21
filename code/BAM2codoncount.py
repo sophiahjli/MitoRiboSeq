@@ -77,15 +77,22 @@ def main(args, loglevel):
         transcript_seq = transcript.get_cds().get_sequence(seq_dict)
         transcript_counts = transcript.get_cds().get_counts(alignments)
 
+        # Many Ensembl annotations have incomplete codon records.
+        # These are coded with an `ensembl_end_phase` attribute, which
+        # is not preserved in transript assembly, so we'll just note the
+        # issue in the log, but continue.
+        # Note: This works if the incomplete codon is on the final exon, but
+        # not if it occurs in the middle of a transcript.
+        # This doesn't seem to be an issue in MT genes, but unsure in other
+        # regions of the genome
         if len(transcript_seq) % 3 != 0:
             logging.warn("Transcript %s length (%i) is not a multiple of "
-                         "three, skipping!" % (transcript.get_name(),
-                                               len(transcript_counts)))
-            continue
-        num_codons = len(transcript_seq)/3
-        logging.debug("Trancript length %i basepairs, %f codons" %
+                         "three!" % (transcript.get_name(),
+                                     len(transcript_counts)))
+        num_codons = int(numpy.floor(len(transcript_seq)/3))
+        logging.debug("Trancript length %i basepairs, %i codons" %
                       (len(transcript_counts), num_codons))
-        for codon_index in range(1, int(numpy.floor(num_codons))):
+        for codon_index in range(1, num_codons):
             codon_start = (codon_index - 1) * 3
             codon_stop = codon_start + 3
             codon_seq = transcript_seq[codon_start:codon_stop]
