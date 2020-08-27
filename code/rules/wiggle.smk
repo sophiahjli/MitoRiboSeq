@@ -1,6 +1,6 @@
 rule bedgraph_specify_mapping:
-    input: counts=config["results_dir"] + "/mapped/{sample}.bam",
-           counts_bai=config["results_dir"] + "/mapped/{sample}.bai",
+    input: counts=config["results_dir"] + "/mapped_unique/{sample}.bam",
+           counts_bai=config["results_dir"] + "/mapped_unique/{sample}.bai",
     output: fw=config["results_dir"] + "/bedgraph/{sample}_{mapping_function}_{offset}_map_fw.wig",
             rc=config["results_dir"] + "/bedgraph/{sample}_{mapping_function}_{offset}_map_rc.wig",
     conda:

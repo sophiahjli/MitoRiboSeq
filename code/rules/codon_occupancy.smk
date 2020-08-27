@@ -1,6 +1,6 @@
 # Use R code to generate codon occupancy tables
 
-rule codon_occpancy:
+rule codon_occupancy:
     input:
         all_codon_count=config["results_dir"] + "/codon_count/All_codoncount_table.txt",
         mito_info=gene_annotation_table,

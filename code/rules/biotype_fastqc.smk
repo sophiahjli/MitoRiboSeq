@@ -75,7 +75,7 @@ rule biotype_category_bed:
 rule biotype_category_bam:
     input:
         bed=genome_dir + "/biotype_category_lists/{location}_{category}_list.bed",
-        bam=config["results_dir"] + "/mapped/{sample}.bam",
+        bam=config["results_dir"] + "/mapped_unique/{sample}.bam",
         genome=genome_fasta_unzipped + ".fai"
     output:
         config["working_dir"] + "/biotype_category_bam/{sample}_{location}_{category}.bam"
@@ -91,7 +91,7 @@ rule biotype_category_bam:
 rule unannotated_bam:
     input:
         bed=nongenes_bed_file,
-        bam=config["results_dir"] + "/mapped/{sample}.bam",
+        bam=config["results_dir"] + "/mapped_unique/{sample}.bam",
         genome=genome_fasta_unzipped + ".fai"
     output:
         config["working_dir"] + "/biotype_category_bam/{sample}_unannotated.bam"
@@ -107,7 +107,7 @@ rule unannotated_bam:
 
 rule unaligned_bam:
     input:
-        bam=config["results_dir"] + "/mapped/{sample}.bam",
+        bam=config["results_dir"] + "/mapped_unique/{sample}.bam",
     output:
         config["working_dir"] + "/biotype_category_bam/{sample}_unaligned.bam"
     log:

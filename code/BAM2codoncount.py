@@ -11,6 +11,7 @@ import logging
 import pprint
 import numpy
 from plastid import GFF3_TranscriptAssembler, GTF2_TranscriptAssembler
+from plastid import GenomicSegment
 from plastid import BAMGenomeArray
 from plastid import ThreePrimeMapFactory, FivePrimeMapFactory
 from plastid import SizeFilterFactory
@@ -66,16 +67,16 @@ def main(args, loglevel):
             logging.info("Evaluated %s genes" % (i + 1))
         logging.debug(transcript.get_name())
         logging.debug(pprint.pformat(transcript.attr))
-        if len(transcript) <= 0:
-            logging.warn("Transcript %s is length zero (0), skipping!",
+        if (transcript.get_cds().get_length() <= 0):
+            logging.info("Transcript %s has zero (0) length CDS, skipping!",
                          transcript.get_name())
             continue
         if transcript.attr.get("pseudo", None) == "true":
-            logging.warn("Transcript %s is a pseudogene, skipping!",
+            logging.info("Transcript %s is a pseudogene, skipping!",
                          transcript.get_name())
             continue
-        transcript_seq = transcript.get_cds().get_sequence(seq_dict)
-        transcript_counts = transcript.get_cds().get_counts(alignments)
+        logging.debug('Transcript {} attributes: {}'.format(
+            transcript.get_name(), transcript.attr))
 
         # Many Ensembl annotations have incomplete codon records.
         # These are coded with an `ensembl_end_phase` attribute, which
@@ -85,14 +86,44 @@ def main(args, loglevel):
         # not if it occurs in the middle of a transcript.
         # This doesn't seem to be an issue in MT genes, but unsure in other
         # regions of the genome
-        if len(transcript_seq) % 3 != 0:
-            logging.warn("Transcript %s length (%i) is not a multiple of "
-                         "three!" % (transcript.get_name(),
-                                     len(transcript_counts)))
-        num_codons = int(numpy.floor(len(transcript_seq)/3))
-        logging.debug("Trancript length %i basepairs, %i codons" %
-                      (len(transcript_counts), num_codons))
-        for codon_index in range(1, num_codons):
+        transcript_cds = transcript.get_cds()
+        end_phase = transcript_cds.get_length() % 3
+        extra_bases = None
+        if end_phase != 0:
+            extra_bases = 3 - end_phase
+            logging.warning("Transcript %s CDS length (%i) is not a multiple "
+                            "of three, adding %i bases" %
+                            (transcript.get_name(),
+                             transcript_cds.get_length(),
+                             extra_bases))
+            last_segment = transcript_cds[-1]
+            logging.debug(last_segment)
+            transcript_cds.add_segments(
+                    GenomicSegment(last_segment.chrom, last_segment.end,
+                                   last_segment.end + extra_bases,
+                                   last_segment.strand))
+
+        transcript_seq = transcript_cds.get_sequence(seq_dict)
+        num_codons = int(numpy.floor(transcript_cds.get_length()/3))
+        logging.debug("Trancript %s length %i basepairs, %i codons" %
+                      (transcript.get_name(), len(transcript_seq), num_codons))
+
+        logging.debug('>{} {}\n{}'.format(transcript.get_name(), transcript.get_gene(),
+                                  transcript_seq.upper()))
+
+        start_codon = transcript_seq[:3].upper()
+        stop_codon = transcript_seq[-3:].upper()
+        if start_codon not in args.start_codons:
+            logging.error('Transcript {} start codon "{}" is not valid'.format(
+                transcript.get_name(), start_codon))
+        if stop_codon not in args.stop_codons:
+            logging.error('Transcript {} stop codon "{}" is not valid'.format(
+                transcript.get_name(), stop_codon))
+        logging.debug(transcript_cds.as_gff3())
+
+        transcript_counts = transcript_cds.get_counts(alignments)
+
+        for codon_index in range(1, num_codons + 1):
             codon_start = (codon_index - 1) * 3
             codon_stop = codon_start + 3
             codon_seq = transcript_seq[codon_start:codon_stop]
@@ -110,7 +141,7 @@ def main(args, loglevel):
             outfh.write("%s\t%s\t%s\t%i\t%i\t%i\t%i\t%i\n" %
                         (transcript_id,
                          ",".join(gene_ids),
-                         codon_seq, codon_index, codon_count_sum,
+                         codon_seq.upper(), codon_index, codon_count_sum,
                          codon_counts[0], codon_counts[1],
                          codon_counts[2]))
 
@@ -159,6 +190,12 @@ if __name__ == '__main__':
     parser.add_argument("--max_length", help="Minimum length of reads to "
                         "count (default: %(default)s)", type=int, default=35,
                         metavar="N")
+
+    parser.add_argument('--start_codons', nargs='+',
+                        default=["ATG", "ATA"])
+    parser.add_argument('--stop_codons', nargs='+',
+                        default=["TAA", "TAG", "AGA", "AGG"])
+
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
                         action="store_true")
