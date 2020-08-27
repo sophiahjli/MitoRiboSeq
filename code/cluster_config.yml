@@ -22,7 +22,7 @@ bwa_samse:
     "memory": 50000
 filter_nonunique_alignments:
     "n": 5
-cbedgraph_specify_mapping:
+bedgraph_specify_mapping:
     "qos": "1day"
     "time": "6:00:00"
 count:
