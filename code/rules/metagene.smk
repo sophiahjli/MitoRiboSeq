@@ -1,7 +1,7 @@
 rule metagene_stop_ND6:
     input:
-        counts = config["results_dir"] + "/mapped_unique/{sample}.bam",
-        counts_bai = config["results_dir"] + "/mapped_unique/{sample}.bai",
+        counts = config["results_dir"] + "/mapped/{sample}.bam",
+        counts_bai = config["results_dir"] + "/mapped/{sample}.bai",
         roi = nd6_base + "_rois.txt"
     output: 
         profile = config["results_dir"] + "/metagene/{sample}/{sample}_ND6stop_metagene_profile.txt",
@@ -18,8 +18,8 @@ rule metagene_stop_ND6:
 
 rule metagene_start_ND4:
     input:
-        counts = config["results_dir"] + "/mapped_unique/{sample}.bam",
-        counts_bai = config["results_dir"] + "/mapped_unique/{sample}.bai",
+        counts = config["results_dir"] + "/mapped/{sample}.bam",
+        counts_bai = config["results_dir"] + "/mapped/{sample}.bai",
         roi = nd4_base + "_rois.txt"
     output: 
         profile = config["results_dir"] + "/metagene/{sample}/{sample}_ND4start_metagene_profile.txt",

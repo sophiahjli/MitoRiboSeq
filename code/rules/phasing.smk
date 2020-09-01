@@ -1,7 +1,7 @@
 rule phasing_analysis:
     input: 
-        counts=config["results_dir"] + "/mapped_unique/{sample}.bam",
-        counts_index=config["results_dir"] + "/mapped_unique/{sample}.bai",
+        counts=config["results_dir"] + "/mapped/{sample}.bam",
+        counts_index=config["results_dir"] + "/mapped/{sample}.bai",
         gff=mito_gff_file
     output: 
         profile = config["results_dir"] + "/phasing_analysis/{sample}/{sample}_phasing.txt",

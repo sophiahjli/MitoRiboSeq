@@ -1,7 +1,6 @@
 rule all_align:
     input:
         expand(config["results_dir"] + "/mapped/{sample}.bai", sample=samples.keys()),
-        expand(config["results_dir"] + "/mapped_unique/{sample}.bai", sample=samples.keys())
 
 
 rule bwa_index:
@@ -63,16 +62,6 @@ rule bwa_samse:
     wrapper:
         "0.51.3/bio/bwa/samse"
 
-rule filter_nonunique_alignments:
-    input: 
-        config["results_dir"] + "/mapped/{sample}.bam"
-    output:
-        config["results_dir"] + "/mapped_unique/{sample}.bam"
-    params:
-        "-b -q 1" # optional params string
-    wrapper:
-        "0.64.0/bio/samtools/view"    
-
 rule samtools_index:
     input: "{file}.bam"
     output: "{file}.bai"
@@ -83,7 +72,7 @@ rule samtools_index:
 
 rule samtools_stats:
     input:
-        config["results_dir"] + "/mapped_unique/{sample}.bam"
+        config["results_dir"] + "/mapped/{sample}.bam"
     output:
         config["results_dir"] + "/samtools_stats/{sample}.txt"
     params:

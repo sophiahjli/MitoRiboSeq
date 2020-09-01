@@ -2,8 +2,8 @@
 rule codon_counts:
     input: gff=mito_gff_file,
            fasta=genome_fasta_unzipped,
-           counts=config["results_dir"] + "/mapped_unique/{sample}.bam",
-           counts_bai=config["results_dir"] + "/mapped_unique/{sample}.bai"
+           counts=config["results_dir"] + "/mapped/{sample}.bam",
+           counts_bai=config["results_dir"] + "/mapped/{sample}.bai"
     output: config["results_dir"] + "/codon_count/{sample}_codon_count.txt"
     log: log_dir + "/codon_count/{sample}_codon_count.log"
     conda:
