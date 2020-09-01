@@ -8,11 +8,11 @@ from __future__ import division
 
 import argparse
 import logging
-import pprint
 import numpy
+import pprint
 from plastid import GFF3_TranscriptAssembler, GTF2_TranscriptAssembler
-from plastid import GenomicSegment
 from plastid import BAMGenomeArray
+from plastid import GenomicSegment
 from plastid import ThreePrimeMapFactory, FivePrimeMapFactory
 from plastid import SizeFilterFactory
 from Bio import SeqIO
@@ -87,15 +87,18 @@ def main(args, loglevel):
         # This doesn't seem to be an issue in MT genes, but unsure in other
         # regions of the genome
         transcript_cds = transcript.get_cds()
+        transcript_seq = transcript_cds.get_sequence(seq_dict)
+
         end_phase = transcript_cds.get_length() % 3
-        extra_bases = None
+        extra_bases = 0
         if end_phase != 0:
             extra_bases = 3 - end_phase
             logging.warning("Transcript %s CDS length (%i) is not a multiple "
-                            "of three, adding %i bases" %
+                            "of three, adding %i \"A\" bases" %
                             (transcript.get_name(),
                              transcript_cds.get_length(),
                              extra_bases))
+            transcript_seq = transcript_seq + "A" * extra_bases
             last_segment = transcript_cds[-1]
             logging.debug(last_segment)
             transcript_cds.add_segments(
@@ -103,13 +106,12 @@ def main(args, loglevel):
                                    last_segment.end + extra_bases,
                                    last_segment.strand))
 
-        transcript_seq = transcript_cds.get_sequence(seq_dict)
-        num_codons = int(numpy.floor(transcript_cds.get_length()/3))
+        num_codons = int(numpy.floor(len(transcript_seq)/3))
         logging.debug("Trancript %s length %i basepairs, %i codons" %
                       (transcript.get_name(), len(transcript_seq), num_codons))
-
-        logging.debug('>{} {}\n{}'.format(transcript.get_name(), transcript.get_gene(),
-                                  transcript_seq.upper()))
+        logging.debug('>{} {}\n{}'.format(transcript.get_name(),
+                                          transcript.get_gene(),
+                                          transcript_seq.upper()))
 
         start_codon = transcript_seq[:3].upper()
         stop_codon = transcript_seq[-3:].upper()
