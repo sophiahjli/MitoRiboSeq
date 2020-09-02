@@ -100,24 +100,24 @@ rule mito_gff_file_utrs:
     script:
         "../scripts/simulate_utrs.py"
 
-rule nd4_gff_file:
+rule start_site_gff_file:
     input:
         mito_gff_utr_file
     output:
-        nd4_base + ".gff",
+        start_site_base + ".gff",
     shell:
         """
-        grep -E '(^##[^#]|{config[nd4_gene_id]})' {input:q} > {output:q}
+        grep -E '(^##[^#]|{config[start_site_gene_id]})' {input:q} > {output:q}
         """
 
-rule nd4_roi_file:
+rule start_site_roi_file:
     input:
-        nd4_base + ".gff",
+        start_site_base + ".gff",
     output:
-        bed=nd4_base + "_rois.bed",
-        txt=nd4_base + "_rois.txt"
+        bed=start_site_base + "_rois.bed",
+        txt=start_site_base + "_rois.txt"
     params:
-        outbase=nd4_base
+        outbase=start_site_base
     conda:
         "../envs/plastid.yml"
     shell:
@@ -129,24 +129,24 @@ rule nd4_roi_file:
                 {params.outbase:q}
         """
 
-rule nd6_gff_file:
+rule stop_site_gff_file:
     input:
         mito_gff_utr_file
     output:
-        nd6_base + ".gff",
+        stop_site_base + ".gff",
     shell:
         """
-        grep -E '(^##[^#]|{config[nd6_gene_id]})' {input:q} > {output:q}
+        grep -E '(^##[^#]|{config[stop_site_gene_id]})' {input:q} > {output:q}
         """
 
-rule nd6_roi_file:
+rule stop_site_roi_file:
     input:
-        nd6_base + ".gff",
+        stop_site_base + ".gff",
     output:
-        bed=nd6_base + "_rois.bed",
-        txt=nd6_base + "_rois.txt"
+        bed=stop_site_base + "_rois.bed",
+        txt=stop_site_base + "_rois.txt"
     params:
-        outbase=nd6_base
+        outbase=stop_site_base
     conda:
         "../envs/plastid.yml"
     shell:

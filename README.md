@@ -22,7 +22,7 @@ Starting with FASTQ files, the workflow is divided into three main parts: QC and
 ### Outputs
 
 *   `mapped` - BAM alignment files 
-*   `metagene` - [plastid `metagene count`] output for both the `nd4_gene_id` and the `nd6_gene_id` specified in the config
+*   `metagene` - [plastid `metagene count`] output used to determine the A-site (using stop codon) and P-site (using start codon) offsets 
 *   `codon_count` - codon count table of all samples, separated and combined as one file
 *   `phasing_analysis` - [plastid `phaze_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
     output to estimate sub-codon phasing, stratified by read length.
@@ -42,7 +42,7 @@ Starting with FASTQ files, the workflow is divided into three main parts: QC and
 2.  **Trim reads** - Trim adapter sequences and low quality bases from fastq files using [cutadapt](https://cutadapt.readthedocs.io/en/stable/).
 3.  **Align reads** - Use [BWA](http://bio-bwa.sourceforge.net/bwa.shtml) to align reads to the genome
 4.  **Metagene analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) scripts 
-    [`metagene`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) to provide a profile of counts over stop codons
+    [`metagene`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.metagene.html#module-plastid.bin.metagene) to provide a profile of counts relative to start and stop codons to determine the A-site and P-site offset for the experiment
 5.  **Read Phasing Analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) script
     [`phase_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size) 
     to estimate [sub-codon phasing](https://plastid.readthedocs.io/en/latest/glossary.html#term-sub-codon-phasing), stratified by read length

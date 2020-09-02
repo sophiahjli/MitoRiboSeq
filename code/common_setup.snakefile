@@ -50,8 +50,8 @@ gene_annotation_table = os.path.join(gtf_dir, "{}.gene_annotation_table.txt".for
 
 mito_gff_file = os.path.join(gff_dir, "{}.mito.gff".format(gff_basename_noext))
 mito_gff_utr_file = os.path.join(gff_dir, "{}.mito.added_utrs.gff".format(gff_basename_noext))
-nd4_base = os.path.join(gff_dir, "{}.nd4".format(gff_basename_noext))
-nd6_base = os.path.join(gff_dir, "{}.nd6".format(gff_basename_noext))
+start_site_base = os.path.join(gff_dir, "{}.start_site".format(gff_basename_noext))
+stop_site_base = os.path.join(gff_dir, "{}.stop_site".format(gff_basename_noext))
 
 def get_fastq(wildcards):
     return samples[wildcards.sample]
