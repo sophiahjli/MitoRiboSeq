@@ -14,7 +14,6 @@ rule codon_counts:
             --fasta "{input.fasta}" \
             --min_length={config[params][plastid][min_length]} \
             --max_length={config[params][plastid][max_length]} \
-            --add_three \
             --offset {config[params][plastid][offset]} \
             --{config[params][plastid][mapping_function]} \
             -o "{output}" 2> "{log}"'

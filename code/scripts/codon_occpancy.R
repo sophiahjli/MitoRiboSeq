@@ -2,6 +2,8 @@ library(tidyverse)
 library(ggrepel)
 library(cowplot)
 
+save.image()
+
 ############
 #Load data #
 ############
@@ -96,16 +98,23 @@ plot_occupancy <- function(sample,occupancy){
   # Label four different styles of plotting depending on what type of codon it is
   occupancy <- occupancy %>% mutate(sig = case_when(occupancy_bygenome >= mean(.$occupancy_bygenome) + 1.5*sd(.$occupancy_bygenome)~ 1,TRUE ~ 0)) %>%
     mutate(is_Met = codon_seq %in% Met, is_stop = codon_seq %in% Stop,
-           plot_col = case_when(is_Met == T ~ "2",is_stop ==T ~ "3",sig ==1 ~ "4",T~"1"))
+           plot_col = case_when(is_Met == T ~ "2",is_stop ==T ~ "3",sig ==1 ~ "4",T~"1")) %>%
+    mutate(codon_type = case_when(codon_seq %in% Met ~ "Start",
+                                  codon_seq %in% Stop ~ "Stop",
+                                  sig == 1 ~ "Sig",
+                                  T ~ "Codons"))
   
   plot_style <- list(geom_point(),
                      geom_hline(yintercept = 1,linetype = 2),
                      theme(axis.text.x = element_blank(),axis.ticks.x = element_blank(),
                            legend.position = "right",legend.title = element_blank(),aspect.ratio = 0.442),
                      xlab(""),ggtitle(sample),
-                     scale_colour_manual(values = c("#000000","#0021fa","#009e25","#fa0000"),labels =c("Codons","Start","Stop","Sig")))
+                     scale_colour_manual(values = c("Codons" = "#000000",
+                                                    "Start" = "#0021fa",
+                                                    "Stop" = "#009e25",
+                                                    "Sig" = "#fa0000")))
   
-  output_plot <- ggplot(data = occupancy, aes(x=reorder(codon_seq,occupancy_bygenome),y = occupancy_bygenome,col = plot_col)) +
+  output_plot <- ggplot(data = occupancy, aes(x=reorder(codon_seq,occupancy_bygenome),y = occupancy_bygenome, col = factor(codon_type))) +
     plot_style +  geom_text_repel(data = occupancy %>% filter(sig>0),aes(label=codon_seq),show.legend = FALSE) +
     ylab("Codon occupancy") 
   

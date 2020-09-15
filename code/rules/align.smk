@@ -1,6 +1,6 @@
 rule all_align:
     input:
-        expand(config["results_dir"] + "/mapped/{sample}.bai", sample=samples.keys())
+        expand(config["results_dir"] + "/mapped/{sample}.bai", sample=samples.keys()),
 
 
 rule bwa_index:

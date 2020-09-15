@@ -18,11 +18,13 @@ genome_annotation_gtf_file: "genome/Homo_sapiens.GRCh38.100.gtf.gz"
 # Mitochondrial Chromosome ID
 mito_chrom_id: "MT"
 
-# ND4 Gene ID - Start site is used as ROI
-nd4_gene_id: "ENSG00000198886"
+# Gene ID to use to determine p-site offset (using CDS Start) 
+# By default, we selected ATP6 since there is a 5' UTR
+start_site_gene_id: "ENSG00000198899"
 
-# ND6 Gene ID - Stop site is used as ROI
-nd6_gene_id: "ENSG00000198695"
+# Gene ID to use to determine a-site offset (using CDS Stop) 
+# By default, we selected ND6 since there is a 3' UTR
+stop_site_gene_id: "ENSG00000198695"
 
 # Generate summary counts for gene biotypes
 biotype_summary_counts: False
@@ -54,7 +56,7 @@ params:
     params: "--adapter='CTGTAGGCACCATCAATATCTCGTATGCCGTCTTCTGCTTG' "
   plastid:
     # `offset` is obtained after running "mito_readphasing_metagene.snakefile"
-    offset: 14
+    offset: 15
     min_length: 15
     max_length: 45
     mapping_function: "threeprime"

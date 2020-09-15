@@ -20,6 +20,8 @@ bwa_samse:
     "qos": "1day"
     "time": "6:00:00"
     "memory": 50000
+filter_nonunique_alignments:
+    "n": 5
 bedgraph_specify_mapping:
     "qos": "1day"
     "time": "6:00:00"

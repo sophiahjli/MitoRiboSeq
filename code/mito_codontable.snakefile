@@ -7,11 +7,17 @@ rule all:
    input:
         config["results_dir"] + "/qc/multiqc.html",
         config["results_dir"] + "/codon_count/All_codoncount_table.txt",
-        mito_data_raw_coverage_bygene=config["results_dir"] + "/QC/mito_data_raw_coverage_bygene.csv",
-        mito_data_raw_depth_bygene=config["results_dir"] + "/QC/mito_data_raw_depth_bygene.csv",
-        figures=config["results_dir"] + "/figures",
-        mito_occupancy_table=config["results_dir"] + "/tables/mito_occupancy_table.csv",
-        mito_cumsum_table=config["results_dir"] + "/tables/mito_cumsum_table.csv"
+        config["results_dir"] + "/QC/mito_data_raw_coverage_bygene.csv",
+        config["results_dir"] + "/QC/mito_data_raw_depth_bygene.csv",
+        config["results_dir"] + "/figures",
+        config["results_dir"] + "/tables/mito_occupancy_table.csv",
+        config["results_dir"] + "/tables/mito_cumsum_table.csv",
+        expand(config["results_dir"] + "/bedgraph/{sample}_{mapping_function}_{offset}_map_{strand}.wig",
+               sample=samples.keys(),
+               offset=config["params"]["plastid"]["offset"],
+               mapping_function=config["params"]["plastid"]["mapping_function"],
+               strand=['fw', 'rc']),
+
 
 rule all_qc:
     input:
