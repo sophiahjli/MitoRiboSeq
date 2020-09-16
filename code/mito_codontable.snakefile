@@ -7,8 +7,8 @@ rule all:
    input:
         config["results_dir"] + "/qc/multiqc.html",
         config["results_dir"] + "/codon_count/All_codoncount_table.txt",
-        config["results_dir"] + "/QC/mito_data_raw_coverage_bygene.csv",
-        config["results_dir"] + "/QC/mito_data_raw_depth_bygene.csv",
+        config["results_dir"] + "/qc/mito_data_raw_coverage_bygene.csv",
+        config["results_dir"] + "/qc/mito_data_raw_depth_bygene.csv",
         config["results_dir"] + "/figures/norm_cumsum_plot.pdf",
         expand(config["results_dir"] + "/figures/{sample}_occupancy_plot.pdf", sample=samples.keys()),
         config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq.pdf",
@@ -25,8 +25,8 @@ rule all:
 
 rule all_qc:
     input:
-        mito_data_raw_coverage_bygene=config["results_dir"] + "/QC/mito_data_raw_coverage_bygene.csv",
-        mito_data_raw_depth_bygene=config["results_dir"] + "/QC/mito_data_raw_depth_bygene.csv",
+        mito_data_raw_coverage_bygene=config["results_dir"] + "/qc/mito_data_raw_coverage_bygene.csv",
+        mito_data_raw_depth_bygene=config["results_dir"] + "/qc/mito_data_raw_depth_bygene.csv",
 
 rule all_figures:
     input:

@@ -27,7 +27,7 @@ Starting with FASTQ files, the workflow is divided into three main parts: QC and
 *   `phasing_analysis` - [plastid `phaze_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size)
     output to estimate sub-codon phasing, stratified by read length.
 *   `bedgraph` - [plastid `make_wiggle`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.make_wiggle.html#module-plastid.bin.make_wiggle) output. Genome browser tracks from read alignments, using mapping rules to extract ribosomal A-sites from the alignments
-*   `QC` - the quality control analysis, including read depth and coverage
+*   `qc` - the quality control analysis, including read depth and coverage
 *   `figures` - all the figures
 *   `tables` - cumulative codon counts for each gene and codon occupancy analysis results
 *   `logs` - logs from each of the workflow steps, used in troubleshooting

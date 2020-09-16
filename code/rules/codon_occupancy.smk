@@ -2,16 +2,18 @@
 
 rule codon_occupancy:
     input:
-        all_codon_count=config["results_dir"] + "/codon_count/All_codoncount_table.txt",
-        mito_info=gene_annotation_table,
-        mito_aminoacid_codon=config["mito_aminoacid_codon"]
+        codon_counts=config["results_dir"] + "/codon_count/All_codoncount_table.txt",
+        gene_annotations=gene_annotation_table,
+        mitochondria_codon_table=config["mito_aminoacid_codon"]
     output:
         expand(config["results_dir"] + "/figures/{sample}_occupancy_plot.pdf", sample=samples.keys()),
-        mito_data_raw_coverage_bygene=config["results_dir"] + "/QC/mito_data_raw_coverage_bygene.csv",
-        mito_data_raw_depth_bygene=config["results_dir"] + "/QC/mito_data_raw_depth_bygene.csv",
-        mito_occupancy_table=config["results_dir"] + "/tables/mito_occupancy_table.csv",
-        mito_cumsum_table=config["results_dir"] + "/tables/mito_cumsum_table.csv",
+        raw_coverage_bygene=config["results_dir"] + "/qc/mito_data_raw_coverage_bygene.csv",
+        raw_depth_bygene=config["results_dir"] + "/qc/mito_data_raw_depth_bygene.csv",
+        occupancy_table=config["results_dir"] + "/tables/mito_occupancy_table.csv",
+        cumsum_table=config["results_dir"] + "/tables/mito_cumsum_table.csv",
         norm_cumsum_plot=config["results_dir"] + "/figures/norm_cumsum_plot.pdf",
+    params:
+        figures_directory=config["results_dir"] + "/figures"
     conda:
         "../envs/r.yml"
     script:

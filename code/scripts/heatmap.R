@@ -10,7 +10,7 @@ library(argparser, quietly=TRUE)
 p <- arg_parser("Create heatmaps from codon count data")
 p <- add_argument(p, "codon_counts", help="Codon count data table")
 
-# Add an optional argument
+# Add an optional arguments
 p <- add_argument(p, "--heatmap_pdf",
                   help="Heatmap PDF filename",
                   default="Heatmap_codoncount_ordercodonfreq.pdf")
@@ -21,20 +21,23 @@ p <- add_argument(p, "--heatmap_scaled_compressed_pdf",
                   help="Scaled and compressed PDF filename",
                   default="Heatmap_codoncount_ordercodonfreq_scaled_compressed.pdf")
 
-# Debug
-if (interactive()) {
-  print("Running interactively...")
-  input_file <- "results/codon_count/All_codoncount_table.txt"
-  argv <- parse_args(p, c(input_file))
-  print(argv)
-} else if (exists("snakemake")) {
+# Parse arguments (interactive, snakemake, or command line)
+if (exists("snakemake")) {
+  # Arguments via Snakemake
   argv <- parse_args(p, c(
     snakemake@input[["codon_counts"]],
     "--heatmap_pdf", snakemake@output[["heatmap_pdf"]],
     "--heatmap_scaled_pdf", snakemake@output[["heatmap_scaled_pdf"]],
     "--heatmap_scaled_compressed_pdf", snakemake@output[["heatmap_scaled_compressed_pdf"]]
   ))
+} else if (interactive()) {
+  # Arguments supplied inline (for debug/testing when running interactively)
+  print("Running interactively...")
+  input_file <- "results/codon_count/All_codoncount_table.txt"
+  argv <- parse_args(p, c(input_file))
+  print(argv)
 } else {
+  # Arguments from command line
   argv <- parse_args(p)  
 }
 
