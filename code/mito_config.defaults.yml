@@ -56,7 +56,7 @@ params:
     params: "--adapter='CTGTAGGCACCATCAATATCTCGTATGCCGTCTTCTGCTTG' "
   plastid:
     # `offset` is obtained after running "mito_readphasing_metagene.snakefile"
-    offset: 15
+    offset: 14
     min_length: 15
     max_length: 45
     mapping_function: "threeprime"
