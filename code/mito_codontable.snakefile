@@ -9,7 +9,11 @@ rule all:
         config["results_dir"] + "/codon_count/All_codoncount_table.txt",
         config["results_dir"] + "/QC/mito_data_raw_coverage_bygene.csv",
         config["results_dir"] + "/QC/mito_data_raw_depth_bygene.csv",
-        config["results_dir"] + "/figures",
+        config["results_dir"] + "/figures/norm_cumsum_plot.pdf",
+        expand(config["results_dir"] + "/figures/{sample}_occupancy_plot.pdf", sample=samples.keys()),
+        config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq.pdf",
+        config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq_scaled.pdf",
+        config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq_scaled_compressed.pdf",
         config["results_dir"] + "/tables/mito_occupancy_table.csv",
         config["results_dir"] + "/tables/mito_cumsum_table.csv",
         expand(config["results_dir"] + "/bedgraph/{sample}_{mapping_function}_{offset}_map_{strand}.wig",
@@ -26,8 +30,12 @@ rule all_qc:
 
 rule all_figures:
     input:
-        figures=config["results_dir"] + "/figures",
-
+        expand(config["results_dir"] + "/figures/{sample}_occupancy_plot.pdf", sample=samples.keys()),
+        norm_cumsum_plot=config["results_dir"] + "/figures/norm_cumsum_plot.pdf",
+        heatmap_pdf=config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq.pdf",
+        heatmap_scaled_pdf=config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq_scaled.pdf",
+        heatmap_scaled_compressed_pdf=config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq_scaled_compressed.pdf",
+ 
 rule all_tables:
     input:
         mito_occupancy_table=config["results_dir"] + "/tables/mito_occupancy_table.csv",
