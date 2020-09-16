@@ -78,14 +78,10 @@ def main(args, loglevel):
         logging.debug('Transcript {} attributes: {}'.format(
             transcript.get_name(), transcript.attr))
 
-        # Many Ensembl annotations have incomplete codon records.
-        # These are coded with an `ensembl_end_phase` attribute, which
-        # is not preserved in transript assembly, so we'll just note the
-        # issue in the log, but continue.
-        # Note: This works if the incomplete codon is on the final exon, but
-        # not if it occurs in the middle of a transcript.
-        # This doesn't seem to be an issue in MT genes, but unsure in other
-        # regions of the genome
+        # Many Ensembl MT annotations have incomplete codon records.
+        # These are coded with an `ensembl_end_phase` attribute
+        # These should be filled in with 'A's, which come from the
+        # polyA tail
         transcript_cds = transcript.get_cds()
         transcript_seq = transcript_cds.get_sequence(seq_dict)
 
