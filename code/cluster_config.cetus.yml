@@ -23,5 +23,6 @@ bwa_samse:
 bedgraph_specify_mapping:
     "qos": "1day"
     "time": "6:00:00"
+    "memory": 10000
 count:
     "n": 5
