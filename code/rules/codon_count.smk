@@ -20,8 +20,9 @@ rule codon_counts:
 
 rule collapse_codon_counts:
     input: expand(config["results_dir"] + "/codon_count/{sample}_codon_count.txt", sample=samples.keys()),
-    output: config["results_dir"] + "/codon_count/All_codoncount_table.txt"
+    output: temp(config["results_dir"] + "/codon_count/All_codoncount_table.tmp")
     log: log_dir + "/codon_count/combine_codon_count.log"
+    group: "all_codon_count"
     conda:
         "../envs/gawk.yml"
     shell:
@@ -34,4 +35,22 @@ rule collapse_codon_counts:
             }}
         BEGIN {{ OFS="\\t" }}
         {{if ($1 !~ "transcript_id") {{ fn=basename(FILENAME); sub("_codon_count.txt", "", fn); print $0, fn }} }}' {input:q} >> {output:q} 2> {log:q}
+        """
+
+rule add_gene_names:
+    input:
+        gene_annotations=gene_annotation_table,
+        codon_count_table=config["results_dir"] + "/codon_count/All_codoncount_table.tmp"
+    output:
+        config["results_dir"] + "/codon_count/All_codoncount_table.txt"
+    log:
+        log_dir + "/codon_count/add_gene_names.log"
+    group: "all_codon_count"
+    conda:
+        "../envs/csvkit.yml"
+    shell:
+        """
+        csvjoin --tabs --left --columns gene_id {input.codon_count_table:q} {input.gene_annotations:q} | 
+        csvcut --not-columns Chromosome |
+        csvformat --out-tabs > {output:q} 2> {log:q}
         """
