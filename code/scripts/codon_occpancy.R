@@ -8,7 +8,6 @@ library(argparser, quietly=TRUE)
 p <- arg_parser("Generate codon occupancy tables and figures")
 
 p <- add_argument(p, "codon_counts", help="Codon count data table")
-p <- add_argument(p, "gene_annotations", help="Mapping of gene IDs to gene names")
 p <- add_argument(p, "mitochondria_codon_table", help="Mitochondria codon table")
 
 # Add an optional arguments
@@ -33,7 +32,6 @@ if (exists("snakemake")) {
   # Arguments via Snakemake
   argv <- parse_args(p, c(
     snakemake@input[["codon_counts"]],
-    snakemake@input[["gene_annotations"]],
     snakemake@input[["mitochondria_codon_table"]],
     "--raw_coverage_bygene", snakemake@output[["raw_coverage_bygene"]],
     "--raw_depth_bygene", snakemake@output[["raw_depth_bygene"]],
@@ -45,10 +43,8 @@ if (exists("snakemake")) {
     # Arguments supplied inline (for debug/testing when running interactively)
     print("Running interactively...")
     codon_counts_file <- "results/codon_count/All_codoncount_table.txt"
-    gene_annotations_file <- "genome/Homo_sapiens.GRCh38.100.gene_annotation_table.txt"
     mitochondria_codon_table <- "genome/AA_Codon_HumMito.csv"
     argv <- parse_args(p, c(codon_counts_file,
-                            gene_annotations_file,
                             mitochondria_codon_table))
     print(argv)
 } else {
@@ -60,13 +56,7 @@ if (exists("snakemake")) {
 ############
 #Load data #
 ############
-all_raw_data <- read_tsv(argv$codon_counts)
-
-# Load the mapping where we can turn IDs into names that are easily identifiable
-mito_info <-read_tsv(argv$gene_annotations)
-
-raw_data <- all_raw_data %>%
-  inner_join(., mito_info, by="gene_id")
+raw_data <- read_tsv(argv$codon_counts)
 
 # Load the mitochondria codon table
 mito_aminoacid_codon <- read_csv(argv$mitochondria_codon_table)

@@ -3,7 +3,6 @@
 rule codon_occupancy:
     input:
         codon_counts=config["results_dir"] + "/codon_count/All_codoncount_table.txt",
-        gene_annotations=gene_annotation_table,
         mitochondria_codon_table=config["mito_aminoacid_codon"]
     output:
         expand(config["results_dir"] + "/figures/{sample}_occupancy_plot.pdf", sample=samples.keys()),
@@ -12,6 +11,8 @@ rule codon_occupancy:
         occupancy_table=config["results_dir"] + "/tables/mito_occupancy_table.csv",
         cumsum_table=config["results_dir"] + "/tables/mito_cumsum_table.csv",
         norm_cumsum_plot=config["results_dir"] + "/figures/norm_cumsum_plot.pdf",
+    log:
+        log_dir + "/codon_occupancy/codon_occupancy.log"
     params:
         figures_directory=config["results_dir"] + "/figures"
     conda:
@@ -26,6 +27,8 @@ rule heatmaps:
         heatmap_pdf=config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq.pdf",
         heatmap_scaled_pdf=config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq_scaled.pdf",
         heatmap_scaled_compressed_pdf=config["results_dir"] + "/figures/Heatmap_codoncount_ordercodonfreq_scaled_compressed.pdf",
+    log:
+        log_dir + "/heatmaps/heatmaps.log"
     conda:
         "../envs/r.yml"
     script:
