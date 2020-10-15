@@ -1,6 +1,6 @@
 # MitoRiboSeq
 
-This workflow is used to generate codon- and gene-based analysis from mitochondrial ribosome profiling data generated using the protocols described in Monitoring mitochondrial translation with ribosome profiling in Nature Protocol by Li et al. 2019 [ref link].
+This workflow is used to generate codon- and gene-based analysis from mitochondrial ribosome profiling data generated using the protocols described in Monitoring mitochondrial translation with ribosome profiling in Nature Protocol by Li et al. 2020.
 
 Dependencies are installed using [Bioconda](https://bioconda.github.io/).
 The workflow is written using [Snakemake](https://snakemake.readthedocs.io/).
@@ -10,7 +10,7 @@ The workflow is written using [Snakemake](https://snakemake.readthedocs.io/).
 
 This workflow is designed to take FASTQ files from the Illumina sequencer and map each mitoribosome footprint to its occupied A-site. This mapping will allow detailed monitoring of mitoribosome translation dynamics. 
 
-Starting with FASTQ files, the workflow is divided into three main parts: QC and metagene analysis, A-site assignment and codon count table generation, and downstream codon occupancy and cumulative ribosome occupancy analysis. In the first part, the workflow will run QC on the input FASTQ files, align all of the reads to the genome, and perform a metagene analysis. The metagene analysis helps the user to determine the offset from the 5' end of the read to the ribosomal A-site. Once the offset is determined, all of the reads will be assigned to the A-site at the nucleotide level and the counts for each codon in each gene are arranged in a table to facilitate downstream analysis. Two common analyses, codon occupancy analysis and cumulative mitoribosome footprint along the transcript, are provided to visaulize mitoribosome distribution on mitochondria-encoded genes.
+Starting with FASTQ files, the workflow is divided into three main parts: QC and metagene analysis, A-site assignment and codon count table generation, and downstream codon occupancy analysis. In the first part, the workflow will run QC on the input FASTQ files, then align all of the reads to the genome (nuclear and micorhondrial genome together), and finally perform a metagene analysis. The metagene analysis helps the user to determine the offset from the 3' end of the read to the ribosomal A-site. Once the offset is determined, all of the reads will be assigned to the A-site at the nucleotide level and the counts for each codon in each gene are arranged in a table to facilitate downstream analysis. Once the codon count table is generated, two common analyses, which are presented in Figure 7 of the manuscript, It includes codon occupancy analysis and cumulative mitoribosome footprint along the transcripts, are provided to visaulize mitoribosome distribution on mitochondria-encoded genes.
 
 ### Inputs
 
@@ -46,10 +46,9 @@ Starting with FASTQ files, the workflow is divided into three main parts: QC and
 5.  **Read Phasing Analysis** - Use the [plastid](https://plastid.readthedocs.io/en/latest/) script
     [`phase_by_size`](https://plastid.readthedocs.io/en/latest/generated/plastid.bin.phase_by_size.html#module-plastid.bin.phase_by_size) 
     to estimate [sub-codon phasing](https://plastid.readthedocs.io/en/latest/glossary.html#term-sub-codon-phasing), stratified by read length
-6.  **Visualize** - visualize the ribosomal A-site coverage by generating genome browser tracks (wiggle format)
-7.  **Codon Analysis** - Use [plastid](https://plastid.readthedocs.io/en/latest/) to generate ribosomal occupancy counts per codon
-8.  **Read Length Distribution** - *Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor.*
-9.  **Codon Occupancy** - Written in R, *lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eleifend.*
+6.  **Generate codon count table** - Use [plastid](https://plastid.readthedocs.io/en/latest/) to generate codon count table with the offset determined in the Metagene analysis (assign each reads to the corresponding ribosomal A-site)
+7.  **Visualize** - Visualize the ribosomal A-site coverage by generating genome browser tracks (wiggle format)
+8.  **Codon occupancy Analysis** - Written in R to generate three figures. The first one uses hierarchical clustering and heatmap to compare samples by their codon occupancy. The second one shows the codon occupancy result for each sample individually. The third one identifies ribosome stalling site along the transcripts by plotting the cumulative ribosome counts.
 
 
 ## Install prerequisites
