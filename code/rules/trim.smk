@@ -10,10 +10,11 @@ rule cutadapt:
         fastq=config["working_dir"] + "/trimmed/{sample}.fastq.gz",
         qc=config["working_dir"] + "/trimmed/{sample}.qc.txt",
     params:
+        adapters="",
         extra=config["params"]["cutadapt"]["params"]
     log:
         log_dir + "/cutadapt/{sample}.log"
     threads: 5
     wrapper:
-        "0.63.0/bio/cutadapt/se"
+        "0.76.0/bio/cutadapt/se"
 
